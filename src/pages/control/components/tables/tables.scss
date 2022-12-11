@@ -1,0 +1,81 @@
+.tables {
+  width: 100%;
+  height: 100%;
+  .tabhead {
+    box-sizing: border-box;
+    width: 100%;
+    height: 107px;
+    padding: 16px 24px;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 6px solid #061527;
+    .floorlist {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+      .flooritem {
+        box-sizing: content-box;
+        width: 180px;
+        height: 72px;
+        padding: 0;
+        border: 3px solid #061527;
+        border-radius: 9px 9px 0 0;
+        text-align: center;
+        line-height: 72px;
+        color: #061527;
+        font-size: 30px;
+        margin-right: 20px;
+      }
+      .active {
+        background-color: #061527;
+        color: white;
+      }
+    }
+    .refreshBtn {
+      margin: 0;
+      padding: 0;
+      width: 200px;
+      height: 70px;
+      line-height: 70px;
+    }
+  }
+  .tablelist {
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    .listitem {
+      display: flex;
+      flex-direction: column;
+      width: 210px;
+      height: 256px;
+      margin: 27px 21px;
+      background: linear-gradient(157deg, #FBFAFA 0%, rgba(0, 0, 0, 0) 100%);
+      box-shadow: 0 0 13px 7px #0000000d;
+      border-radius: 10px;
+      opacity: 1;
+      font-size: 20px;
+      box-sizing: content-box;
+      text-align: center;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      .no {
+        margin-top: 30px;
+        font-size: 30px;
+      }
+      .num {
+        color: #00000080;
+      }
+      .price {
+        margin-top: 40px;
+        font-size: 32px;
+        font-weight: bold;
+      }
+    }
+  }
+}

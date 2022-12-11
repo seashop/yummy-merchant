@@ -1,0 +1,28 @@
+.step {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 60px;
+  height: 20px;
+  .btn {
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    border: 1px solid #061527;
+    font-size: 14px;
+    color: #061527;
+    text-align: center;
+  }
+  .disabled {
+    border-color: #AAA;
+    color: #AAA;
+  }
+  .text {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+    color: #061527;
+  }
+}
