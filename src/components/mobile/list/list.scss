@@ -1,0 +1,102 @@
+.list {
+  // position: absolute;
+  // top: 180px;
+  // bottom: 0;
+  // width: 100%;
+  // left: 0;
+  // right: 0;
+  width: 750px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #F8F8F8;
+  .listItem {
+    width: 100%;
+    height: 200px;
+    background: #FFFFFF;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    .left {
+      position: relative;
+      .orderNum {
+        position: absolute;
+        left: 32px;
+        top: 27px;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 65px;
+        line-height: 89px;
+        color: #000000;
+      }
+      .typeName {
+        position: absolute;
+        left: 240px;
+        top: 47px;
+        width: 70px;
+        text-align: center;
+        padding: 0 5px;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 40px;
+        color: #F24822;
+        border: 3px solid #F24822;
+      }
+      .orderTime {
+        position: absolute;
+        left: 32px;
+        top: 128px;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 30px;
+        line-height: 41px;
+        color: #8C8C8C;
+      }
+    }
+    .right {
+      position: relative;
+      .price {
+        position: absolute;
+        width: 200px;
+        text-align: right;
+        right: 32px;
+        top: 41px;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 49px;
+        color: #000000;
+      }
+      .btn {
+        width: 210px;
+        height: 60px;
+        position: absolute;
+        right: 32px;
+        top: 109px;
+        text-align: center;
+        line-height: 60px;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        color: #FFFFFF;
+        border-radius: 5px;
+      }
+      .btnIn {
+        background: linear-gradient(360deg, #E64433 0%, rgba(230, 137, 51, 0.74) 153.57%);
+      }
+      .btnOut {
+        background: linear-gradient(360deg, #2FAA61 0%, #75D12D 153.57%);
+      }
+    }
+  }
+}
