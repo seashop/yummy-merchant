@@ -1,0 +1,50 @@
+name: Nodejs
+
+on: [push]
+
+jobs:
+  cloudflare-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Sed Config Base
+        shell: bash
+        run: |
+          # cat .env.production | base64
+          # echo ${{ secrets.CONFIG }} | base64 --decode > config/dev.js
+          # echo ${{ secrets.CONFIG }} | base64 --decode > config/prod.js
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Build
+        env:
+          CI: true
+        run: |
+          yarn install
+          yarn build:h5
+
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUBBOTTOKEN }}
+          publish_branch: gh-pages
+          publish_dir: dist
