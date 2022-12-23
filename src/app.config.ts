@@ -1,9 +1,10 @@
 export default defineAppConfig({
   pages: [
-    'pages/mobile/order/order',
+    'pages/mobile/category/category',
+    'pages/control/control',
     'pages/mobile/home/home',
     'pages/mobile/login/login',
-    'pages/control/control',
+    'pages/mobile/order/order',
     'pages/index/index',
     'pages/product/product',
   ],
