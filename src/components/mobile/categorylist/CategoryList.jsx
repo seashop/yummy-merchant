@@ -1,21 +1,110 @@
-import { useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import { useState, useEffect } from 'react'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
+import Taro from '@tarojs/taro'
 import './categoryList.scss'
 
+const Threshold = 15
+
+const categoryList = [
+  {
+    name: 'aaaa',
+    id: 1,
+  },
+  {
+    name: 'bbbb',
+    id: 2,
+  },
+  {
+    name: 'cccc',
+    id: 3,
+  }
+]
+
 const CategoryList = props => {
+
+  const { otherHeight } = props;
+  const [height, setHeight] = useState(0)
+  const [activeId, setActiveId] = useState(1)
+
+  const handleRightScroll = (e) => {
+    console.log('rightScroll--->', e.detail.scrollTop)
+  }
+
+  const handleCategoryChange = (val) => {
+    setActiveId(val)
+  }
+
+  useEffect(() => {
+    if (otherHeight > 0) {
+      try {
+        const res = Taro.getSystemInfoSync()
+        const screenHeight = res.windowHeight
+        setHeight(screenHeight - otherHeight)
+        console.log('height--->', screenHeight, otherHeight)
+      } catch (error) {
+        
+      }
+    }
+  }, [otherHeight])
   
   return (
     <View className='categoryList'>
-      <View className='leftPart'>leftPart</View>
-      <View className='productList'>
+      <ScrollView
+        className='leftPart'
+        style={{height}}
+        scrollWithAnimation
+        scrollY
+        lowerThreshold={Threshold}
+        upperThreshold={Threshold}
+      >
+        {
+          categoryList.map(item => {
+            return (
+              <CategoryItem handleCategoryChange={handleCategoryChange} {...item} key={'category-item-key-' + item.id} active={item.id === activeId} />
+            )
+          })
+        }
+      </ScrollView>
+      <ScrollView
+        className='productList'
+        style={{height}}
+        scrollWithAnimation
+        scrollY
+        lowerThreshold={Threshold}
+        upperThreshold={Threshold}
+        onScroll={handleRightScroll}
+      >
         <ProductItem />
-      </View>
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+      </ScrollView>
     </View>
   )
 }
 
-const ProductItem = props => {
+const CategoryItem = props => {
+  const { id, name, active, handleCategoryChange } = props
+  const handleClick = () => {
+    handleCategoryChange(id)
+  }
+  return (
+    <View onClick={handleClick} className={`categoryItem ${active ? 'active' : ''}`}>
+      {name}
+    </View>
+  )
+}
+
+export const ProductItem = props => {
   const [count, setCount] = useState(0)
   const imgsrc = 'https://sea.fly.dev/backend/assets/Group%20647@2x.decd18a6.png'
   const handleBuyCountChange = val => {

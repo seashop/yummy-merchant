@@ -1,11 +1,53 @@
 .categoryPage {
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  position: relative;
   .handlePart {
     width: 100%;
     text-align: right;
     .myOrderBtn {
       margin-right: 10px;
+    }
+  }
+  .orderInfo {
+    width: 100%;
+    height: 150px;
+    background-color: #E8E8E8;
+    color: #F24822;
+    font-size: 64px;
+    line-height: 150px;
+    box-sizing: border-box;
+    padding-left: 30px;
+    font-weight: 700;
+  }
+  .bottomPart {
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    .totalPrice {
+      width: 500px;
+      background-color: rgba(25, 53, 87, 1);
+      color: white;
+      font-size: 30px;
+      box-sizing: border-box;
+      padding-left: 30px;
+      line-height: 100px;
+      font-weight: bold;
+    }
+    .orderBtn {
+      width: 250px;
+      background-color: #FFC165;
+      color: #061527;
+      font-size: 30px;
+      text-align: center;
+      line-height: 100px;
     }
   }
 }

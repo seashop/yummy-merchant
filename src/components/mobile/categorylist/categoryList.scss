@@ -1,6 +1,5 @@
 .categoryList {
   width: 100%;
-  height: 100%;
   color: black;
   display: flex;
   flex-direction: row;
@@ -8,44 +7,56 @@
   justify-content: space-between;
   .leftPart {
     flex: 1;
+    background-color: #F5F5F5;
+    .categoryItem {
+      width: 100%;
+      height: 120px;
+      font-size: 40px;
+      color: black;
+      text-align: center;
+      line-height: 120px;
+    }
+    .active {
+      background-color: white;
+    }
   }
   .productList {
     flex: 1 0 400px;
-    .productItem {
+  }
+}
+.productItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px 10px;
+  .img {
+    display: block;
+    width: 250px;
+  }
+  .rightPart {
+    margin-left: 10px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    .productName {
+      color: #333;
+      font-size: 30px;
+      font-weight: bolder;
+    }
+    .productPrice {
+      margin-top: 10px;
+      text-align: left;
+      color: red;
+      font-size: 30px;
+      font-weight: bolder;
       width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-      padding: 20px 10px;
-      .img {
-        display: block;
-        width: 250px;
-      }
-      .rightPart {
-        margin-left: 10px;
-        display: flex;
-        align-items: flex-end;
-        flex-direction: column;
-        justify-content: center;
-        .productName {
-          color: #333;
-          font-size: 30px;
-          font-weight: bolder;
-        }
-        .productPrice {
-          margin-top: 10px;
-          text-align: left;
-          color: red;
-          font-size: 30px;
-          font-weight: bolder;
-          width: 100%;
-        }
-        .buyCount {
-          height: 40px;
-          line-height: 40px;
-        }
-      }
+    }
+    .buyCount {
+      height: 40px;
+      line-height: 40px;
     }
   }
 }

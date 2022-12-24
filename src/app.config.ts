@@ -1,5 +1,6 @@
 export default defineAppConfig({
   pages: [
+    'pages/mobile/result/result',
     'pages/mobile/category/category',
     'pages/control/control',
     'pages/mobile/home/home',

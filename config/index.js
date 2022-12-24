@@ -48,7 +48,7 @@ const config = {
     }
   },
   h5: {
-    publicPath: '/',
+    publicPath: '/yummy-merchant/',
     staticDirectory: 'static',
     postcss: {
       autoprefixer: {
