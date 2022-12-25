@@ -1,6 +1,17 @@
 .resultPage {
   width: 100%;
   height: 100%;
+  position: relative;
+  .homeIcon {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+  }
+  .listIcon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+  }
   .status {
     width: 100%;
     height: 150px;
@@ -41,6 +52,7 @@
   }
   .priceDetail {
     width: 100%;
+    margin-bottom: 70px;
     .priceDetailItem {
       width: 100%;
       height: 60px;

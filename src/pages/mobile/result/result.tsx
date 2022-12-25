@@ -1,5 +1,7 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, ScrollView } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
+import Taro from '@tarojs/taro'
 import './result.scss'
 import { ProductItem } from '../../../components/mobile/categorylist/CategoryList'
 
@@ -14,9 +16,19 @@ export default class Result extends Component<PropsWithChildren> {
 
   componentDidHide () { }
 
+  handleGoHome = () => {
+    Taro.navigateTo({url: '/pages/mobile/home/home'})
+  }
+
+  handleGoList = () => {
+    Taro.navigateTo({url: '/pages/mobile/order/order'})
+  }
+
   render () {
     return (
       <View className='resultPage'>
+        <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+        <AtIcon value='bullet-list' size='40' color='#333' className='listIcon' onClick={this.handleGoList}></AtIcon>
         <View className='status'>Ordered Successfully</View>
         <View className='orderNum'>A006</View>
         <View className='price'>S$ 16.00</View>

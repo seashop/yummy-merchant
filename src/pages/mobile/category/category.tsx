@@ -1,5 +1,6 @@
 import React, { Component, PropsWithChildren } from 'react'
 import { View } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import './category.scss'
 import CategoryList from '../../../components/mobile/categorylist/CategoryList'
 
@@ -33,6 +34,10 @@ export default class Category extends Component<PropsWithChildren> {
 
   componentDidHide () { }
 
+  handleOrder = () => {
+    Taro.navigateTo({url: '/pages/mobile/result/result'})
+  }
+
   render () {
     return (
       <View className='categoryPage'>
@@ -43,7 +48,7 @@ export default class Category extends Component<PropsWithChildren> {
         <CategoryList otherHeight={this.state.otherHeight} />
         <View className='bottomPart' ref={this.bottomPartRef}>
           <View className='totalPrice'>Total Price: S$ 36.22</View>
-          <View className='orderBtn'>Order Now</View>
+          <View className='orderBtn' onClick={this.handleOrder}>Order Now</View>
         </View>
       </View>
     )
