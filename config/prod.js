@@ -3,6 +3,7 @@ module.exports = {
     NODE_ENV: '"production"'
   },
   defineConstants: {
+    APIBasePath: JSON.stringify('https://sea.fly.dev/api/v0')
   },
   mini: {},
   h5: {
