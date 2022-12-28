@@ -1,13 +1,14 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import path from '../../../utils/path'
 import './login.scss'
 
 export default class Login extends Component<PropsWithChildren> {
 
   state = {
-    username: '',
-    password: '',
+    username: 'dev',
+    password: 'youShouldChnageMe',
     isLoading: false,
   }
 
@@ -52,11 +53,26 @@ export default class Login extends Component<PropsWithChildren> {
     }
     this.setState({isLoading: true})
     Taro.showLoading({title: 'loading'})
-    setTimeout(() => {
-      Taro.hideLoading()
-      this.setState({isLoading: false})
-      Taro.navigateTo({url: '/pages/mobile/home/home'})
-    }, 2000)
+    Taro.request({
+      url: APIBasePath + path.mobile.login,
+      method: 'POST',
+      data: {username: this.state.username, password: this.state.password},
+      success: (res: any) => {
+        console.log('login--->', res)
+        if (res.statusCode === 200) {
+          try {
+            Taro.setStorage({key: 'passport', data: res.data.passport})
+            Taro.setStorage({key: 'token', data: res.data.token})
+          } catch (error) { }
+        }
+        Taro.hideLoading()
+        this.setState({isLoading: false})
+        Taro.navigateTo({url: '/pages/mobile/home/home'})
+      },
+      fail: function (error) {
+        console.log('loadProductData error--->', error)
+      }
+    })
   }
 
   render () {
@@ -66,8 +82,8 @@ export default class Login extends Component<PropsWithChildren> {
         <View className='text1'>Hi, Welcome</View>
         <View className='text2'>Sea shop, your business intelligence  assistant</View>
         <View className='loginForm'>
-          <Input type='text'onInput={this.handleUsernameChange} placeholder='please input your phone number' focus placeholderTextColor='#BFBFBF' className='input username' />
-          <Input type='safe-password' onInput={this.handlePasswordChange} password placeholder='please input your password' placeholderTextColor='#BFBFBF' className='input password' />
+          <Input type='text' value={this.state.username} onInput={this.handleUsernameChange} placeholder='please input your phone number' focus placeholderTextColor='#BFBFBF' className='input username' />
+          <Input type='safe-password' value={this.state.password} onInput={this.handlePasswordChange} password placeholder='please input your password' placeholderTextColor='#BFBFBF' className='input password' />
         </View>
         <View className='loginBtn' onClick={this.handleLogin}>Login</View>
       </View>

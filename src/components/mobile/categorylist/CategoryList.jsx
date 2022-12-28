@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { View, Image, ScrollView } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import './categoryList.scss'
 import path from '../../../utils/path.ts'
+import MerchantImage from '../image/image'
 
 const Threshold = 15
 
@@ -30,6 +31,8 @@ const CategoryList = props => {
   const [categoryList, setCategoryList] = useState([])
   const [productList, setProductList] = useState([])
   const [showsProductList, setShowsProductList] = useState([])
+  const [innId, setInnId] = useState('')
+  const [token, setToken] = useState('')
 
   const handleRightScroll = (e) => {
     console.log('rightScroll--->', e.detail.scrollTop)
@@ -41,16 +44,22 @@ const CategoryList = props => {
 
   const loadCategoryData = () => {
     Taro.request({
-      url: APIBasePath + path.mobile.getCategoryList,
+      url: APIBasePath + path.mobile.getCategoryList.replace('{innId}', innId),
       method: 'GET',
+      header: {
+        Authorization: 'Bearer ' + token,
+      },
       success: function (res) {
         console.log('loadCategoryData--->', res)
-        if (res.statusCode === 200 && res.data.code === 0) {
-          const temp = res.data.result.items
-          temp.forEach(item => item.productList = [])
+        if (res.statusCode === 200) {
+          const temp = res.data.productCats
+          temp.forEach(item => {
+            item.category_id = item.id
+            item.productList = []
+          })
           setCategoryList(temp)
-          if (res.data.result.items.length > 0) {
-            setActiveId(res.data.result.items[0].category_id)
+          if (res.data.productCats.length > 0) {
+            setActiveId(res.data.productCats[0].category_id)
           }
         }
       },
@@ -62,18 +71,39 @@ const CategoryList = props => {
 
   const loadProductData = () => {
     Taro.request({
-      url: APIBasePath + path.mobile.getProductList,
-      method: 'GET',
+      url: APIBasePath + path.mobile.getProductList.replace('{innId}', innId),
+      method: 'POST',
+      data: { page_size: 1000 },
+      header: {
+        Authorization: 'Bearer ' + token,
+      },
       success: function (res) {
         console.log('loadProductData--->', res)
-        if (res.statusCode === 200 && res.data.code === 0) {
-          setProductList(res.data.result.items)
+        if (res.statusCode === 200) {
+          const temp = res.data.products
+          temp.forEach(item => {
+            item.category_id = item.catId
+          })
+          setProductList(temp)
         }
       },
       fail: function (error) {
         console.log('loadProductData error--->', error)
       }
     })
+  }
+
+  const loadBaseData = () => {
+    try {
+      const value1 = Taro.getStorageSync('passport').data
+      const id = value1.inns && value1.inns.length > 0 && value1.inns[0].id
+      const value2 = Taro.getStorageSync('token')
+      const tokenStr = value2.access
+      setInnId(id)
+      setToken(tokenStr)
+    } catch (error) {
+      console.log('loadBaseData error--->', error)
+    }
   }
 
   useEffect(() => {
@@ -90,9 +120,17 @@ const CategoryList = props => {
   }, [otherHeight])
 
   useEffect(() => {
-    loadCategoryData()
-    loadProductData()
+    loadBaseData()
+    // loadCategoryData()
+    // loadProductData()
   }, [])
+
+  useEffect(() => {
+    if (innId && token) {
+      loadCategoryData()
+      loadProductData()
+    }
+  }, [innId, token])
 
   useEffect(() => {
     if (categoryList.length > 0 && productList.length > 0) {
@@ -105,7 +143,7 @@ const CategoryList = props => {
       setCategoryList([...temp])
       setShowsProductList(temp1)
     }
-  }, [categoryList, categoryList.length, productList, productList.length])
+  }, [categoryList.length, productList.length])
   
   return (
     <View className='categoryList'>
@@ -137,7 +175,7 @@ const CategoryList = props => {
         {
           showsProductList.map(product => {
             return (
-              <ProductItem {...product} key={'product-key-' + product.goods_id} />
+              <ProductItem {...product} key={'product-key-' + product.goods_id} token={token} />
             )
           })
         }
@@ -159,22 +197,22 @@ const CategoryItem = props => {
 }
 
 export const ProductItem = props => {
-  const { img, price, title } = props
+  const { imgIds, price, title, token, stock } = props
   const [count, setCount] = useState(0)
-  const imgsrc = img.full_url
+  const imgId = imgIds.length > 0 ? imgIds[0] : ''
   const handleBuyCountChange = val => {
     setCount(val)
   }
   return (
     <View className='productItem'>
-      <Image className='img' src={imgsrc} defaultSource='https://sea.fly.dev/backend/assets/Group%20647@2x.decd18a6.png' />
+      <MerchantImage token={token} className='img' id={imgId} />
       <View className='rightPart'>
         <View className='productName'>{title}</View>
-        <View className='productPrice'>S$ {price}</View>
+        <View className='productPrice'>S$ {price.toFixed(2)}</View>
         <AtInputNumber
           className='buyCount'
           min={0}
-          max={100}
+          max={stock}
           step={1}
           value={count}
           onChange={handleBuyCountChange}

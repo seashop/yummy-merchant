@@ -1,8 +1,9 @@
 const path = {
   mobile: {
-    login: '/passport/login',
-    getCategoryList: '/category',
-    getProductList: '/product'
+    login: ':merchant/passport',
+    getCategoryList: '/inns/{innId}/productCats',
+    getProductList: '/inns/{innId}/products:list',
+    getImgUrl: ':common/images/{id}/url'
   }
 }
 
