@@ -25,7 +25,7 @@ const Threshold = 15
 
 const CategoryList = props => {
 
-  const { otherHeight } = props;
+  const { otherHeight, handleSelectedProductList } = props;
   const [height, setHeight] = useState(0)
   const [activeId, setActiveId] = useState(0)
   const [categoryList, setCategoryList] = useState([])
@@ -175,7 +175,7 @@ const CategoryList = props => {
         {
           showsProductList.map(product => {
             return (
-              <ProductItem {...product} key={'product-key-' + product.goods_id} token={token} />
+              <ProductItem {...product} key={'product-key-' + product.id} token={token} handleSelectedProductList={handleSelectedProductList} />
             )
           })
         }
@@ -197,26 +197,35 @@ const CategoryItem = props => {
 }
 
 export const ProductItem = props => {
-  const { imgIds, price, title, token, stock } = props
+  const { imgIds, price, title, token, stock, handleSelectedProductList, id, canEdit = true } = props
   const [count, setCount] = useState(0)
   const imgId = imgIds.length > 0 ? imgIds[0] : ''
   const handleBuyCountChange = val => {
     setCount(val)
+    handleSelectedProductList({
+      id,
+      imgIds,
+      price,
+      title,
+      count: val
+    })
   }
   return (
     <View className='productItem'>
-      <MerchantImage token={token} className='img' id={imgId} />
+      <MerchantImage token={token} width={250} id={imgId} />
       <View className='rightPart'>
         <View className='productName'>{title}</View>
         <View className='productPrice'>S$ {price.toFixed(2)}</View>
-        <AtInputNumber
-          className='buyCount'
-          min={0}
-          max={stock}
-          step={1}
-          value={count}
-          onChange={handleBuyCountChange}
-        />
+        {
+          canEdit && <AtInputNumber
+            className='buyCount'
+            min={0}
+            max={stock}
+            step={1}
+            value={count}
+            onChange={handleBuyCountChange}
+          />
+        }
       </View>
     </View>
   )

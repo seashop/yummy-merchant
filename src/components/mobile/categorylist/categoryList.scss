@@ -36,6 +36,7 @@
     width: 250px;
   }
   .rightPart {
+    flex: 1;
     margin-left: 10px;
     display: flex;
     align-items: flex-end;
@@ -45,6 +46,7 @@
       color: #333;
       font-size: 30px;
       font-weight: bolder;
+      align-self: flex-start;
     }
     .productPrice {
       margin-top: 10px;

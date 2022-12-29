@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import path from '../../../utils/path.ts'
+import './image.scss'
 
 const MerchantImage = props => {
-  const { id, className, token } = props
+  const { id, token } = props
   const [url, setUrl] = useState('')
   const loadUrl = () => {
     Taro.request({
@@ -19,15 +20,15 @@ const MerchantImage = props => {
     })
   }
   useEffect(() => {
-    loadUrl()
+    // loadUrl()
   }, [id])
   if (url) {
     return (
-      <Image src={url} />
+      <Image src={url} className='img' />
     )
   } else {
     return (
-      <Image src='https://sea.fly.dev/backend/assets/Group%20647@2x.decd18a6.png' />
+      <Image src='https://sea.fly.dev/backend/assets/Group%20647@2x.decd18a6.png' className='img' />
     )
   }
 }

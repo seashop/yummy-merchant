@@ -3,7 +3,9 @@ const path = {
     login: ':merchant/passport',
     getCategoryList: '/inns/{innId}/productCats',
     getProductList: '/inns/{innId}/products:list',
-    getImgUrl: ':common/images/{id}/url'
+    getImgUrl: ':common/images/{id}/url',
+    createOrder: '/inns/{innId}/orders:place',
+    getOrderDetail: ':merchant/inns/{innId}/orders/{orderId}'
   }
 }
 
