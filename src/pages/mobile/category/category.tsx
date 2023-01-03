@@ -15,6 +15,7 @@ export default class Category extends Component<PropsWithChildren> {
       otherHeight: 0,
       selectedProductList: [],
       loading: false,
+      prevOrderNum: '--',
     }
   }
 
@@ -29,6 +30,7 @@ export default class Category extends Component<PropsWithChildren> {
         otherHeight: height1 + height2
       })
     }, 300)
+    this.loadOrderList()
   }
 
   componentWillUnmount () { }
@@ -102,6 +104,42 @@ export default class Category extends Component<PropsWithChildren> {
     console.log('list--->', list);
   }
 
+  loadOrderList = () => {
+    try {
+      const value1 = Taro.getStorageSync('passport').data
+      const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
+      const value2 = Taro.getStorageSync('token')
+      const tokenStr = value2.access
+      Taro.request({
+        url: APIBasePath + path.mobile.getOrderList.replace('{innId}', innId),
+        method: 'GET',
+        header: {
+          Authorization: 'Bearer ' + tokenStr,
+        },
+        success: (res: any) => {
+          if (res.statusCode === 200) {
+            const orderList = res.data.orderInfos || [];
+            if (orderList.length > 0) {
+              const orderItem = orderList.pop()
+              this.setState({prevOrderNum: orderItem.order.pickCode})
+            }
+          } else {
+            Taro.showToast({
+              title: '获取上一个订单失败',
+              icon: 'error',
+              duration: 2000
+            })
+          }
+        },
+        fail: (error: any) => {
+          console.log('loadOrderList error--->', error)
+        }
+      })
+    } catch (error) {
+      console.log('loadOrderList error--->', error)
+    }
+  }
+
   render () {
     const totalPrice = this.state.selectedProductList.reduce((total, cur) => {
       return Number(Number(total) + (Number(cur.price) * Number(cur.count))).toFixed(2);
@@ -111,7 +149,7 @@ export default class Category extends Component<PropsWithChildren> {
         {/* <View className='handlePart'>
           <View className='myOrderBtn'>我的订单</View>
         </View> */}
-        <View className='orderInfo' ref={this.orderInfoRef}>前一单取餐码: A002</View>
+        <View className='orderInfo' ref={this.orderInfoRef}>前一单取餐码: {this.state.prevOrderNum}</View>
         <CategoryList otherHeight={this.state.otherHeight} handleSelectedProductList={this.handleSelectedProductList} />
         <View className='bottomPart' ref={this.bottomPartRef}>
           <View className='totalPrice'>Total Price: S$ {totalPrice}</View>

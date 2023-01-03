@@ -1,10 +1,11 @@
 .home {
   width: 100%;
-  height: 100%;
   position: relative;
+  padding-bottom: 150px;
   .textPart {
     margin-left: 53px;
     padding-top: 200px;
+    position: relative;
     .text {
       height: 70px;
       line-height: 70px;
@@ -12,6 +13,12 @@
       font-style: normal;
       font-weight: 400;
       font-size: 60px;
+    }
+    .home0Img {
+      position: absolute;
+      right: 60px;
+      width: 360px;
+      top: 120px;
     }
   }
   .handlePart {
@@ -60,9 +67,14 @@
       }
     }
     .rightImg {
-      margin-top: 93px;
+      // margin-top: 93px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       flex: 1;
       flex-basis: 280px;
+      height: 361.07px;
     }
   }
   .helpPart {
@@ -87,6 +99,10 @@
       font-size: 48px;
       line-height: 60px;
       color: #B8B8B8;
+    }
+    .rightImg {
+      justify-content: flex-start;
+      margin-top: -30px;
     }
   }
 }

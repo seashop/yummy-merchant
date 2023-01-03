@@ -1,7 +1,8 @@
 import { Component, PropsWithChildren } from 'react'
-import { View, Input } from '@tarojs/components'
+import { View, Input, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import path from '../../../utils/path'
+import loginImg from '../../../assets/imgs/loginImg.png'
 import './login.scss'
 
 export default class Login extends Component<PropsWithChildren> {
@@ -78,7 +79,9 @@ export default class Login extends Component<PropsWithChildren> {
   render () {
     return (
       <View className='login'>
-        <View className='bg1'></View>
+        <View className='bg1'>
+          <Image src={loginImg} className='loginImg' />
+        </View>
         <View className='text1'>Hi, Welcome</View>
         <View className='text2'>Sea shop, your business intelligence  assistant</View>
         <View className='loginForm'>

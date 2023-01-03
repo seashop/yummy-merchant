@@ -79,9 +79,11 @@ export default class Result extends Component<PropsWithChildren> {
   render () {
     const { orderDetail, productList, token } = this.state
     return (
-      <View className='resultPage'>
-        <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
-        <AtIcon value='bullet-list' size='40' color='#333' className='listIcon' onClick={this.handleGoList}></AtIcon>
+      <ScrollView scrollY style={{height: 900}} className='resultPage'>
+        <View className='bottomPart'>
+          <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+          <AtIcon value='bullet-list' size='40' color='#333' className='listIcon' onClick={this.handleGoList}></AtIcon>
+        </View>
         <View className='status'>Ordered Successfully</View>
         <View className='orderNum'>{orderDetail.pickCode}</View>
         <View className='price'>S$ {orderDetail.total}</View>
@@ -125,7 +127,7 @@ export default class Result extends Component<PropsWithChildren> {
             <View className='detailRight'>S$ {orderDetail.total}</View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }

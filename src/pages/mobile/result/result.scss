@@ -1,14 +1,21 @@
 .resultPage {
   width: 100%;
-  height: 100%;
   position: relative;
-  .homeIcon {
+  padding-bottom: 50px;
+  .bottomPart {
     position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+  }
+  .homeIcon {
+    position: absolute;
     bottom: 30px;
     left: 30px;
   }
   .listIcon {
-    position: fixed;
+    position: absolute;
     bottom: 30px;
     right: 30px;
   }

@@ -1,6 +1,11 @@
 import { Component, PropsWithChildren } from 'react'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import home0Img from '../../../assets/imgs/home0.png'
+import home1Img from '../../../assets/imgs/home1.png'
+import home2Img from '../../../assets/imgs/home2.svg'
+import home3Img from '../../../assets/imgs/home3.png'
+import home4Img from '../../../assets/imgs/home4.png'
 import './home.scss'
 
 export default class Home extends Component<PropsWithChildren> {
@@ -19,6 +24,7 @@ export default class Home extends Component<PropsWithChildren> {
     return (
       <View className='home'>
         <View className='textPart'>
+          <Image src={home0Img} className='home0Img' />
           <View className='text'>Sea Shop,</View>
           <View className='text'>your business</View>
           <View className='text'>intelligence assistant!</View>
@@ -29,7 +35,9 @@ export default class Home extends Component<PropsWithChildren> {
             <View className='subTitle'>Order Agent</View>
             <View className='desc'>请在这里协助订单</View>
           </View>
-          <View className='rightImg'></View>
+          <View className='rightImg'>
+            <Image src={home1Img} />
+          </View>
         </View>
         <View className='handlePart orderPart'>
           <View className='left'>
@@ -37,7 +45,9 @@ export default class Home extends Component<PropsWithChildren> {
             <View className='subTitle'>Order Center</View>
             <View className='desc'>请在这里处理新订单</View>
           </View>
-          <View className='rightImg'></View>
+          <View className='rightImg'>
+          <Image src={home2Img} />
+          </View>
         </View>
         <View className='handlePart reportPart'>
           <View className='left'>
@@ -45,7 +55,9 @@ export default class Home extends Component<PropsWithChildren> {
             <View className='subTitle'>Reporting Data</View>
             <View className='desc'>请在这里查看数据报表</View>
           </View>
-          <View className='rightImg'></View>
+          <View className='rightImg'>
+          <Image src={home3Img} />
+          </View>
         </View>
         <View className='handlePart morePart'>
           <View className='left'>
@@ -53,7 +65,9 @@ export default class Home extends Component<PropsWithChildren> {
             <View className='subTitle'></View>
             <View className='desc'></View>
           </View>
-          <View className='rightImg'></View>
+          <View className='rightImg'>
+          <Image src={home4Img} />
+          </View>
         </View>
       </View>
     )
