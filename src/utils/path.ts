@@ -6,7 +6,8 @@ const path = {
     getImgUrl: ':common/images/{id}/url',
     createOrder: '/inns/{innId}/orders:place',
     getOrderDetail: ':merchant/inns/{innId}/orders/{orderId}',
-    getOrderList: ':merchant/inns/{innId}/orders'
+    getOrderList: ':merchant/inns/{innId}/orders',
+    updateOrder: ':merchant/inns/{innId}/orders/{orderId}'
   }
 }
 
