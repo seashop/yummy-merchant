@@ -1,5 +1,6 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import Tabs from '../../../components/mobile/tabs/tabs'
 import path from '../../../utils/path'
@@ -83,9 +84,16 @@ export default class Order extends Component<PropsWithChildren> {
     }
   }
 
+  handleGoHome = () => {
+    Taro.navigateTo({url: '/pages/mobile/home/home'})
+  }
+
   render () {
     return (
       <View className='order'>
+        <View className='bottomPart'>
+          <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+        </View>
         <Tabs current={this.state.current} tabList={this.state.tabList} onChange={this.handleChange} />
         {/* <Swiper
           className='tabContent'

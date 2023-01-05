@@ -6,7 +6,22 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  box-sizing: border-box;
+  padding-bottom: 100px;
   .tabContent {
     flex: 1;
+  }
+  .bottomPart {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    z-index: 1000;
+  }
+  .homeIcon {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
   }
 }

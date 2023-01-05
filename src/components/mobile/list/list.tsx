@@ -53,9 +53,9 @@ const List = (props: IListProp) => {
       scrollY
     >
       {
-        list.map((item: any) => {
+        list.map((item: any, index: number) => {
           return (
-            <ListItem {...item.order} key={item.key} updateList={updateList} />
+            <ListItem {...item} key={item.key} index={index} updateList={updateList} />
           )
         })
       }
@@ -65,12 +65,18 @@ const List = (props: IListProp) => {
 
 const ListItem = (props: any) => {
   
-  const { pickCode, type, createdAt, total, id, paymentStatus, status, updateList } = props
+  const { order, products, updateList, index } = props
+  const { pickCode, type, createdAt, total, id, paymentStatus, status } = order
   let typeName = '堂食'
   if (type === TypeEnum.OUT) {
     typeName = '外带'
   }
   const time = formatDate(new Date(createdAt), 'MM-dd hh:mm')
+  let isMaking = false
+  if (index === 0 && paymentStatus === 'STATUS_PAID' && status === 'STAGE_WAIT') {
+    isMaking = true
+  }
+  // if (index === 0) isMaking = true
 
   const handleClick = () => {
     Taro.showLoading({title: 'loading'})
@@ -112,23 +118,54 @@ const ListItem = (props: any) => {
     }
   }
 
-  return (
-    <View className='listItem'>
-      <View className='left'>
-        <View className='orderNum'>{pickCode}</View>
-        <View className='typeName'>{typeName}</View>
-        <View className='orderTime'>{time}</View>
+  if (!isMaking) {
+    return (
+      <View className='listItem'>
+        <View className='left'>
+          <View className='orderNum'>{pickCode}</View>
+          <View className='typeName'>{typeName}</View>
+          <View className='orderTime'>{time}</View>
+        </View>
+        <View className='right'>
+          <View className='price'>S$ {total}</View>
+          {
+            status !== 'STAGE_DONE' && <View className={`btn ${type === TypeEnum.IN ? 'btnOut' : 'btnIn'}`} onClick={handleClick}>
+            {paymentStatus === 'STATUS_UNPAID' ? '确认付款' : '备餐完成'}</View>
+          }
+        </View>
       </View>
-      <View className='right'>
-        <View className='price'>S$ {total}</View>
-        {
-          status !== 'STAGE_DONE' && <View className={`btn ${type === TypeEnum.IN ? 'btnIn' : 'btnOut'}`} onClick={handleClick}>
-          {paymentStatus === 'STATUS_UNPAID' ? '确认付款' : '备餐完成'}</View>
-        }
-        
+    )
+  } else {
+    return (
+      <View className='makingListItem'>
+        <View className='makingListItemContent'>
+          <View className='orderDetail'>
+            <View className='left'>
+              <View className='orderNum'>{pickCode}</View>
+              <View className='typeName'>{typeName}</View>
+            </View>
+            <View className='price'>S$ {total}</View>
+          </View>
+          <View className='productDetail'>
+            {
+              products.length > 0 && products.map((item: any) => {
+                return (
+                  <View className='productItem' key={'orderId-' + id + 'productId-' + item.id}>
+                    <View className='productName'>{item.productTitle}</View>
+                    <View className='productNum'>x {item.quantity}</View>
+                  </View>
+                )
+              })
+            }
+            {
+              products.length === 0 && <View className='noData'>没有餐品数据</View>
+            }
+          </View>
+        </View>
+        <View className='makingBtn' onClick={handleClick}>备餐完成</View>
       </View>
-    </View>
-  )
+    )
+  }
 }
 
 const ListItemDetail = () => {}
