@@ -7,7 +7,8 @@ const path = {
     createOrder: '/inns/{innId}/orders:place',
     getOrderDetail: ':merchant/inns/{innId}/orders/{orderId}',
     getOrderList: ':merchant/inns/{innId}/orders',
-    updateOrder: ':merchant/inns/{innId}/orders/{orderId}'
+    updateOrder: ':merchant/inns/{innId}/orders/{orderId}',
+    getInnDetail: ':merchant/inns/{innId}'
   }
 }
 

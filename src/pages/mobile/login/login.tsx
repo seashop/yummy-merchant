@@ -11,6 +11,7 @@ export default class Login extends Component<PropsWithChildren> {
     username: 'dev',
     password: 'youShouldChnageMe',
     isLoading: false,
+    checked: false,
   }
 
   componentWillMount () { }
@@ -36,6 +37,13 @@ export default class Login extends Component<PropsWithChildren> {
   }
 
   handleLogin = () => {
+    if (!this.state.checked) {
+      return Taro.showToast({
+        title: 'please agree policy',
+        icon: 'error',
+        duration: 2000
+      })
+    }
     if (this.state.isLoading) return
     console.log('login--->', this.state)
     if (this.state.username === '') {
@@ -76,6 +84,10 @@ export default class Login extends Component<PropsWithChildren> {
     })
   }
 
+  handleChecked = () => {
+    this.setState({checked: !this.state.checked})
+  }
+
   render () {
     return (
       <View className='login'>
@@ -89,6 +101,17 @@ export default class Login extends Component<PropsWithChildren> {
           <Input type='safe-password' value={this.state.password} onInput={this.handlePasswordChange} password placeholder='please input your password' placeholderTextColor='#BFBFBF' className='input password' />
         </View>
         <View className='loginBtn' onClick={this.handleLogin}>Login</View>
+        <View className='policy'>
+          <View className={`radio ${this.state.checked ? 'radioChecked' : ''}`} onClick={this.handleChecked}>
+            <View className='radioChild'></View>
+          </View>
+          <View className='radioText'>
+            我已阅读并同意
+            <View className='span'>《Privacy Policy》</View>
+            和
+            <View className='span'>《Terms & Conditions》</View>
+          </View>
+        </View>
       </View>
     )
   }

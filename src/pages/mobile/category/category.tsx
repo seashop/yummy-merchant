@@ -49,6 +49,7 @@ export default class Category extends Component<PropsWithChildren> {
     }
     if (this.state.loading) return
     this.setState({loading: true});
+    Taro.showLoading({title: 'loading'})
     try {
       const value1 = Taro.getStorageSync('passport').data
       const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
@@ -71,6 +72,7 @@ export default class Category extends Component<PropsWithChildren> {
         success: (res: any) => {
           console.log('createOrder success--->', res)
           this.setState({loading: false})
+          Taro.hideLoading()
           if (res.statusCode === 200) {
             Taro.navigateTo({url: '/pages/mobile/result/result?orderId=' + res.data.order.id})
           } else {
@@ -84,11 +86,13 @@ export default class Category extends Component<PropsWithChildren> {
         fail: (error: any) => {
           console.log('createOrder error--->', error)
           this.setState({loading: false})
+          Taro.hideLoading()
         }
       })
     } catch (error) {
       console.log('loadBaseData error--->', error)
       this.setState({loading: false})
+      Taro.hideLoading()
     }
     // Taro.navigateTo({url: '/pages/mobile/result/result'})
   }

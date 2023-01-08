@@ -1,6 +1,7 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import path from '../../../utils/path'
 import home0Img from '../../../assets/imgs/home0.png'
 import home1Img from '../../../assets/imgs/home1.png'
 import home2Img from '../../../assets/imgs/home2.svg'
@@ -10,9 +11,22 @@ import './home.scss'
 
 export default class Home extends Component<PropsWithChildren> {
 
+  state = {
+    welcomeText: '',
+    innName: 'XXXXX店'
+  }
+
   componentWillMount () { }
 
-  componentDidMount () { }
+  componentDidMount () {
+    const hours = new Date().getHours()
+    if (hours > 12) {
+      this.setState({welcomeText: '下午好'})
+    } else {
+      this.setState({welcomeText: '上午好'})
+    }
+    this.handleInnDetail()
+  }
 
   componentWillUnmount () { }
 
@@ -20,15 +34,52 @@ export default class Home extends Component<PropsWithChildren> {
 
   componentDidHide () { }
 
+  handleInnDetail = () => {
+    try {
+      const value1 = Taro.getStorageSync('passport').data
+      const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
+      const value2 = Taro.getStorageSync('token')
+      const tokenStr = value2.access
+      Taro.request({
+        url: APIBasePath + path.mobile.getInnDetail.replace('{innId}', innId),
+        method: 'GET',
+        header: {
+          Authorization: 'Bearer ' + tokenStr,
+        },
+        success: (res: any) => {
+          if (res.statusCode === 200) {
+            console.log('handleInnDetail--->', res.data)
+          } else {
+            Taro.showToast({
+              title: '获取商铺信息失败',
+              icon: 'error',
+              duration: 2000
+            })
+          }
+        },
+        fail: (error: any) => {
+          console.log('handleInnDetail error--->', error)
+        }
+      })
+    } catch (error) {
+      console.log('handleInnDetail error--->', error)
+    }
+  }
+
   render () {
     return (
       <View className='home'>
-        <View className='textPart'>
+        <View className='innInfo'>
+          <View className='welcome'>{this.state.welcomeText}</View>
+          <View className='innName'>{this.state.innName}</View>
+        </View>
+        <Image src={home0Img} className='home0Img' />
+        {/* <View className='textPart'>
           <Image src={home0Img} className='home0Img' />
           <View className='text'>Sea Shop,</View>
           <View className='text'>your business</View>
           <View className='text'>intelligence assistant!</View>
-        </View>
+        </View> */}
         <View className='handlePart helpPart' onClick={() => Taro.navigateTo({url: '/pages/mobile/category/category'})}>
           <View className='left'>
             <View className='title'>协助下单</View>
