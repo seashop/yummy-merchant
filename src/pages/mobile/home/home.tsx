@@ -7,6 +7,7 @@ import home1Img from '../../../assets/imgs/home1.png'
 import home2Img from '../../../assets/imgs/home2.svg'
 import home3Img from '../../../assets/imgs/home3.png'
 import home4Img from '../../../assets/imgs/home4.png'
+import homeHeadImg from '../../../assets/imgs/homehead.png'
 import './home.scss'
 
 export default class Home extends Component<PropsWithChildren> {
@@ -69,17 +70,32 @@ export default class Home extends Component<PropsWithChildren> {
   render () {
     return (
       <View className='home'>
-        <View className='innInfo'>
+        {/* <View className='innInfo'>
           <View className='welcome'>{this.state.welcomeText}</View>
           <View className='innName'>{this.state.innName}</View>
-        </View>
-        <Image src={home0Img} className='home0Img' />
+        </View> */}
+        {/* <Image src={home0Img} className='home0Img' /> */}
         {/* <View className='textPart'>
           <Image src={home0Img} className='home0Img' />
           <View className='text'>Sea Shop,</View>
           <View className='text'>your business</View>
           <View className='text'>intelligence assistant!</View>
         </View> */}
+        <Image src={homeHeadImg} className='homeHeadImg' />
+        <Image src={homeHeadImg} className='homeHeadImg' />
+        <View className='innInfo1'>
+          <View className='innName'>面包房</View>
+          <View className='tongji'>
+            <View className='tongjiItem rightLine'>
+              <View className='itemNum'>S$ 800.00</View>
+              <View className='itemName'>今日营收</View>
+            </View>
+            <View className='tongjiItem'>
+              <View className='itemNum'>5</View>
+              <View className='itemName'>笔数</View>
+            </View>
+          </View>
+        </View>
         <View className='handlePart helpPart' onClick={() => Taro.navigateTo({url: '/pages/mobile/category/category'})}>
           <View className='left'>
             <View className='title'>协助下单</View>
