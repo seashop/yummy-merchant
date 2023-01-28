@@ -111,13 +111,13 @@ export default class Order extends Component<PropsWithChildren> {
           </SwiperItem>
         </Swiper> */}
         {
-          this.state.current === 0 && <List data={this.state.listData} paymentStatus='STATUS_UNPAID' status='STAGE_TODO' />
+          this.state.current === 0 && <List data={this.state.listData} paymentStatus='STATUS_UNPAID' status='STAGE_TODO' loadOrderList={this.loadOrderList}/>
         }
         {
-          this.state.current === 1 && <List data={this.state.listData} paymentStatus='STATUS_PAID' status='STAGE_WAIT' />
+          this.state.current === 1 && <List data={this.state.listData} paymentStatus='STATUS_PAID' status='STAGE_WAIT' loadOrderList={this.loadOrderList}/>
         }
         {
-          this.state.current === 2 && <List data={this.state.listData} status='STAGE_DONE' paymentStatus='STATUS_PAID' />
+          this.state.current === 2 && <List data={this.state.listData} status='STAGE_DONE' paymentStatus='STATUS_PAID' loadOrderList={this.loadOrderList}/>
         }
       </View>
     )

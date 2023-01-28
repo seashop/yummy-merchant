@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { View, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { formatDate } from '../../../utils/utils'
@@ -31,20 +31,40 @@ export interface IListProp {
   data: any[],
   status: string,
   paymentStatus: string
+  loadOrderList: Function
 }
 
 const List = (props: IListProp) => {
   const { data = [], status, paymentStatus } = props
-  const [list, setList] = useState([])
+  const [list, setList] = useState({})
 
   useEffect(() => {
     const temp = data.filter((item: any) => item.order && (item.order.paymentStatus === paymentStatus && item.order.status === status))
-    setList([...temp])
+    // 按日期进行数据整理
+    const timeMap = {}
+    for (let item of temp) {
+      let time = formatDate(new Date(item.order.createdAt), 'yyyy-MM-dd')
+      if (timeMap[time]) {
+        timeMap[time].push(item)
+      } else {
+        timeMap[time] = [item]
+      }
+    }
+    // const time = formatDate(new Date(createdAt), 'MM-dd hh:mm')
+    setList({...timeMap})
   }, [data, status, paymentStatus])
 
-  const updateList = (orderId: string) => {
-    const temp = list.filter((item: any) => item.order.id !== orderId)
-    setList([...temp])
+
+  const listLength = useMemo(() => {
+    const temp = data.filter((item: any) => item.order && (item.order.paymentStatus === paymentStatus && item.order.status === status))
+    return temp.length
+  }, [data])
+
+  const updateList = (date:string, orderId: string) => {
+    // list[date] = list[date].filter((item: any) => item.order.id !== orderId)
+    // setList({...list})
+    // 重新请求列表
+    props.loadOrderList()
   }
   console.log('list--->', list, status, paymentStatus)
   return (
@@ -52,10 +72,18 @@ const List = (props: IListProp) => {
       className='list'
       scrollY
     >
+      {status === 'STAGE_WAIT' && <p className='stage_wait_num'>当前您还有{listLength}笔订单</p>}
       {
-        list.map((item: any, index: number) => {
+        Object.keys(list).map((date) => {
           return (
-            <ListItem {...item} key={item.key} index={index} updateList={updateList} />
+            <>
+              {list[date].length > 0 && <p className='date'>{date}</p>}
+              {list[date].map((item: any, index: number) => {
+                return (
+                  <ListItem date={date} {...item} key={item.key} index={index} updateList={updateList} />
+                )
+              })}
+            </>
           )
         })
       }
@@ -64,14 +92,13 @@ const List = (props: IListProp) => {
 }
 
 const ListItem = (props: any) => {
-  
-  const { order, products, updateList, index } = props
+  const { order, products, updateList, index, date } = props
   const { pickCode, type, createdAt, total, id, paymentStatus, status } = order
   let typeName = '堂食'
   if (type === TypeEnum.OUT) {
     typeName = '外带'
   }
-  const time = formatDate(new Date(createdAt), 'MM-dd hh:mm')
+  const time = formatDate(new Date(createdAt), 'hh:mm:ss')
   let isMaking = false
   if (index === 0 && paymentStatus === 'STATUS_PAID' && status === 'STAGE_WAIT') {
     isMaking = true
@@ -79,43 +106,53 @@ const ListItem = (props: any) => {
   // if (index === 0) isMaking = true
 
   const handleClick = () => {
-    Taro.showLoading({title: 'loading'})
-    try {
-      const value1 = Taro.getStorageSync('passport').data
-      const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
-      const value2 = Taro.getStorageSync('token')
-      const tokenStr = value2.access
-      Taro.request({
-        url: APIBasePath + path.mobile.updateOrder.replace('{innId}', innId).replace('{orderId}', id),
-        method: 'PATCH',
-        data: {
-          type: paymentStatus === 'STATUS_UNPAID' ? 'TYPE_PAID' : 'TYPE_MADE'
-        },
-        header: {
-          Authorization: 'Bearer ' + tokenStr,
-        },
-        success: (res: any) => {
-          console.log('updateOrder success--->', res)
-          if (res.statusCode === 200) {
-            updateList(id)
-          } else {
-            Taro.showToast({
-              title: '更新订单失败',
-              icon: 'error',
-              duration: 2000
+    Taro.showModal({
+      title: '提示',
+      content: paymentStatus === 'STATUS_UNPAID' ? '确认收款？' : '确认备餐？',
+      success: function (res) {
+        if (res.confirm) {
+          Taro.showLoading({title: '请稍等'})
+          try {
+            const value1 = Taro.getStorageSync('passport').data
+            const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
+            const value2 = Taro.getStorageSync('token')
+            const tokenStr = value2.access
+            Taro.request({
+              url: APIBasePath + path.mobile.updateOrder.replace('{innId}', innId).replace('{orderId}', id),
+              method: 'PATCH',
+              data: {
+                type: paymentStatus === 'STATUS_UNPAID' ? 'TYPE_PAID' : 'TYPE_MADE'
+              },
+              header: {
+                Authorization: 'Bearer ' + tokenStr,
+              },
+              success: (res: any) => {
+                console.log('updateOrder success--->', res)
+                if (res.statusCode === 200) {
+                  updateList(date, id)
+                } else {
+                  Taro.showToast({
+                    title: '更新订单失败',
+                    icon: 'error',
+                    duration: 2000
+                  })
+                }
+                Taro.hideLoading()
+              },
+              fail: (error: any) => {
+                console.log('updateOrder error--->', error)
+                Taro.hideLoading()
+              }
             })
+          } catch (error) {
+            console.log('updateOrder error--->', error)
+            Taro.hideLoading()
           }
-          Taro.hideLoading()
-        },
-        fail: (error: any) => {
-          console.log('updateOrder error--->', error)
-          Taro.hideLoading()
+        } else if (res.cancel) {
         }
-      })
-    } catch (error) {
-      console.log('updateOrder error--->', error)
-      Taro.hideLoading()
-    }
+      }
+    })
+
   }
 
   if (!isMaking) {

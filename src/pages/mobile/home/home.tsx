@@ -90,7 +90,7 @@ export default class Home extends Component<PropsWithChildren> {
             <Image src={home1Img} />
           </View>
         </View>
-        <View className='handlePart orderPart'>
+        <View className='handlePart orderPart' onClick={() => Taro.navigateTo({url: '/pages/mobile/order/order'})}>
           <View className='left'>
             <View className='title'>订单中心</View>
             <View className='subTitle'>Order Center</View>
