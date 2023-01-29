@@ -38,6 +38,42 @@
       top: 40px;
     }
   // }
+  .homeHeadImg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .innInfo1 {
+    margin-top: 170px;
+    width: 100%;
+    .innName {
+      width: 100%;
+      text-align: center;
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 38px;
+      line-height: 154.4%;
+    }
+    .tongji {
+      margin-top: 32px;
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      .tongjiItem {
+        flex: 1;
+        text-align: center;
+        .itemNum {
+          color: #F24822;
+        }
+      }
+      .rightLine {
+        border-right: 1px solid #F0F0F0;
+      }
+    }
+  }
   .handlePart {
     width: 690px;
     margin: 0 auto;
