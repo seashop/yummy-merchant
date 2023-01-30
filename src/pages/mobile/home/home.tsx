@@ -2,7 +2,7 @@ import { Component, PropsWithChildren } from 'react'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import path from '../../../utils/path'
-import home0Img from '../../../assets/imgs/home0.png'
+// import home0Img from '../../../assets/imgs/home0.png'
 import home1Img from '../../../assets/imgs/home1.png'
 import home2Img from '../../../assets/imgs/home2.svg'
 import home3Img from '../../../assets/imgs/home3.png'
@@ -84,7 +84,7 @@ export default class Home extends Component<PropsWithChildren> {
           <View className='text'>intelligence assistant!</View>
         </View> */}
         <Image src={homeHeadImg} className='homeHeadImg' />
-        <Image src={homeHeadImg} className='homeHeadImg' />
+        <Image className='innLogo' src={APIBasePath + path.mobile.getImgUrl.replace('{id}', this.state.innDetail.logoId)} />
         <View className='innInfo1'>
           <View className='innName'>{this.state.innDetail.title}</View>
           <View className='tongji'>

@@ -6,25 +6,25 @@ import './image.scss'
 
 const MerchantImage = props => {
   const { id, token } = props
-  const [url, setUrl] = useState('')
-  const loadUrl = () => {
-    Taro.request({
-      url: APIBasePath + path.mobile.getImgUrl.replace('{id}', id),
-      method: 'GET',
-      header: {
-        Authorization: 'Bearer ' + token,
-      },
-      success: (res) => {
-        console.log('loadImgUrl--->', res)
-      }
-    })
-  }
-  useEffect(() => {
-    // loadUrl()
-  }, [id])
-  if (url) {
+  // const [url, setUrl] = useState('')
+  // const loadUrl = () => {
+  //   Taro.request({
+  //     url: APIBasePath + path.mobile.getImgUrl.replace('{id}', id),
+  //     method: 'GET',
+  //     header: {
+  //       Authorization: 'Bearer ' + token,
+  //     },
+  //     success: (res) => {
+  //       console.log('loadImgUrl--->', res)
+  //     }
+  //   })
+  // }
+  // useEffect(() => {
+  //   // loadUrl()
+  // }, [id])
+  if (true) {
     return (
-      <Image src={url} className='img' />
+      <Image src={APIBasePath + path.mobile.getImgUrl.replace('{id}', id)} className='img' />
     )
   } else {
     return (
