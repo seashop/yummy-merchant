@@ -1,9 +1,13 @@
 import React, { Component, PropsWithChildren } from 'react'
-import { View } from '@tarojs/components'
+import { AtBadge, AtFloatLayout, AtActivityIndicator } from 'taro-ui'
+import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './category.scss'
 import path from '../../../utils/path'
 import CategoryList from '../../../components/mobile/categorylist/CategoryList'
+import cartImg from '../../../assets/imgs/cart.png'
+import emptyCartImg from '../../../assets/imgs/emptycart.png'
+import CartList from '../../../components/mobile/cartlist/CartList'
 
 export default class Category extends Component<PropsWithChildren> {
 
@@ -16,6 +20,7 @@ export default class Category extends Component<PropsWithChildren> {
       selectedProductList: [],
       loading: false,
       prevOrderNum: '--',
+      isOpened: false,
     }
   }
 
@@ -49,7 +54,7 @@ export default class Category extends Component<PropsWithChildren> {
     }
     if (this.state.loading) return
     this.setState({loading: true});
-    Taro.showLoading({title: 'loading'})
+    // Taro.showLoading({title: 'loading'})
     try {
       const value1 = Taro.getStorageSync('passport').data
       const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
@@ -71,8 +76,8 @@ export default class Category extends Component<PropsWithChildren> {
         },
         success: (res: any) => {
           console.log('createOrder success--->', res)
-          this.setState({loading: false})
-          Taro.hideLoading()
+          // this.setState({loading: false})
+          // Taro.hideLoading()
           if (res.statusCode === 200) {
             Taro.navigateTo({url: '/pages/mobile/result/result?orderId=' + res.data.order.id})
           } else {
@@ -92,7 +97,7 @@ export default class Category extends Component<PropsWithChildren> {
     } catch (error) {
       console.log('loadBaseData error--->', error)
       this.setState({loading: false})
-      Taro.hideLoading()
+      // Taro.hideLoading()
     }
     // Taro.navigateTo({url: '/pages/mobile/result/result'})
   }
@@ -144,6 +149,19 @@ export default class Category extends Component<PropsWithChildren> {
     }
   }
 
+  handleShowCart = () => {
+    console.log('list--->', this.state.selectedProductList)
+    this.setState({
+      isOpened: !this.state.isOpened
+    })
+  }
+
+  handleCartClose = () => {
+    this.setState({
+      isOpened: false
+    })
+  }
+
   render () {
     const totalPrice = this.state.selectedProductList.reduce((total, cur) => {
       return Number(Number(total) + (Number(cur.price) * Number(cur.count))).toFixed(2);
@@ -155,9 +173,26 @@ export default class Category extends Component<PropsWithChildren> {
         </View> */}
         <View className='orderInfo' ref={this.orderInfoRef}>前一单取餐码: {this.state.prevOrderNum}</View>
         <CategoryList otherHeight={this.state.otherHeight} handleSelectedProductList={this.handleSelectedProductList} />
-        <View className='bottomPart' ref={this.bottomPartRef}>
+        {/* <View className='bottomPart' ref={this.bottomPartRef}>
           <View className='totalPrice'>Total Price: S$ {totalPrice}</View>
           <View className='orderBtn' onClick={this.handleOrder}>Order Now</View>
+        </View> */}
+        <View className='bottomPart1' ref={this.bottomPartRef}>
+          <View className='leftPart'>
+            {
+              this.state.selectedProductList.length > 0 ? <AtBadge value={this.state.selectedProductList.length}>
+                <Image src={cartImg} className='cartImg' onClick={this.handleShowCart} />
+              </AtBadge> : <Image src={emptyCartImg} className='cartImg' />
+            }
+            <View className='totalPrice'>S$ {totalPrice}</View>
+          </View>
+          <View className={`rightPart ${this.state.selectedProductList.length > 0 ? 'active' : ''}`} onClick={this.handleOrder}>Order Now</View>
+        </View>
+        <AtFloatLayout isOpened={this.state.isOpened} title='' scrollY onClose={this.handleCartClose}>
+          <CartList list={this.state.selectedProductList} />
+        </AtFloatLayout>
+        <View className={`mask ${this.state.loading ? '' : 'maskHide'}`}>
+          <AtActivityIndicator content='loading...' size={100} color='white'></AtActivityIndicator>
         </View>
       </View>
     )
