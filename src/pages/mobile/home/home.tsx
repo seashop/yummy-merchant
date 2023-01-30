@@ -14,7 +14,8 @@ export default class Home extends Component<PropsWithChildren> {
 
   state = {
     welcomeText: '',
-    innName: 'XXXXX店'
+    innName: 'XXXXX店',
+    innDetail: {},
   }
 
   componentWillMount () { }
@@ -50,6 +51,7 @@ export default class Home extends Component<PropsWithChildren> {
         success: (res: any) => {
           if (res.statusCode === 200) {
             console.log('handleInnDetail--->', res.data)
+            this.setState({innDetail: res.data})
           } else {
             Taro.showToast({
               title: '获取商铺信息失败',
@@ -84,14 +86,14 @@ export default class Home extends Component<PropsWithChildren> {
         <Image src={homeHeadImg} className='homeHeadImg' />
         <Image src={homeHeadImg} className='homeHeadImg' />
         <View className='innInfo1'>
-          <View className='innName'>面包房</View>
+          <View className='innName'>{this.state.innDetail.title}</View>
           <View className='tongji'>
             <View className='tongjiItem rightLine'>
-              <View className='itemNum'>S$ 800.00</View>
+              <View className='itemNum'>S$ {this.state.innDetail.report ? this.state.innDetail.report.orderSum : 0}</View>
               <View className='itemName'>今日营收</View>
             </View>
             <View className='tongjiItem'>
-              <View className='itemNum'>5</View>
+              <View className='itemNum'>{this.state.innDetail.report ? this.state.innDetail.report.orderCnt : 0}</View>
               <View className='itemName'>笔数</View>
             </View>
           </View>
