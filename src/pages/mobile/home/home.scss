@@ -43,10 +43,20 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1;
+  }
+  .innLogo {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: 80px;
+    left: 315px;
+    z-index: 2;
   }
   .innInfo1 {
-    margin-top: 170px;
+    padding-top: 200px;
     width: 100%;
+    z-index: 2;
     .innName {
       width: 100%;
       text-align: center;
