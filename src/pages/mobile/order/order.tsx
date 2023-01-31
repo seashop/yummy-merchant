@@ -26,7 +26,7 @@ export default class Order extends Component<PropsWithChildren> {
   componentWillMount () { }
 
   componentDidMount () {
-    this.loadOrderList()
+    this.loadOrderList('STAGE_TODO')
   }
 
   componentWillUnmount () { }
@@ -36,15 +36,29 @@ export default class Order extends Component<PropsWithChildren> {
   componentDidHide () { }
 
   handleChange = (cur: any) => {
+    if (cur === this.state.current) return
     if (cur.detail) {
       console.log('handleChange--->', cur.detail)
       this.setState({current: Number(cur.detail.current)})
     } else {
       this.setState({current: Number(cur)})
     }
+    switch (cur) {
+      case 0:
+        this.loadOrderList('STAGE_TODO')
+        break;
+      case 1:
+        this.loadOrderList('STAGE_WAIT')
+        break;
+      case 2:
+        this.loadOrderList('STAGE_DONE')
+        break;
+      default:
+        break;
+    }
   }
 
-  loadOrderList = () => {
+  loadOrderList = (status: string) => {
     try {
       const value1 = Taro.getStorageSync('passport').data
       const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
@@ -53,6 +67,10 @@ export default class Order extends Component<PropsWithChildren> {
       Taro.request({
         url: APIBasePath + path.mobile.getOrderList.replace('{innId}', innId),
         method: 'GET',
+        data: {
+          ["filter.status"]: status,
+          sort: status === 'STAGE_WAIT' ?  '+payment_at' : '-created_at'
+        },
         header: {
           Authorization: 'Bearer ' + tokenStr,
         },
@@ -65,6 +83,10 @@ export default class Order extends Component<PropsWithChildren> {
               })
               this.setState({
                 listData: orderList
+              })
+            } else {
+              this.setState({
+                listData: []
               })
             }
           } else {

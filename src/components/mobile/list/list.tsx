@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { formatDate } from '../../../utils/utils'
 import path from '../../../utils/path'
 import './list.scss'
-
+import successImg from '../../../assets/imgs/success.png'
 export enum StatusEnum {
   NEW,
   PAID,
@@ -55,47 +55,68 @@ const List = (props: IListProp) => {
   }, [data, status, paymentStatus])
 
 
-  const listLength = useMemo(() => {
+  const filterList = useMemo(() => {
     const temp = data.filter((item: any) => item.order && (item.order.paymentStatus === paymentStatus && item.order.status === status))
-    return temp.length
-  }, [data])
+    return temp
+  }, [data, status, paymentStatus])
 
-  const updateList = (date:string, orderId: string) => {
+  const updateList = () => {
     // list[date] = list[date].filter((item: any) => item.order.id !== orderId)
     // setList({...list})
     // 重新请求列表
-    props.loadOrderList()
+    props.loadOrderList(status)
   }
   console.log('list--->', list, status, paymentStatus)
-  return (
-    <ScrollView
-      className='list'
-      scrollY
-    >
-      {status === 'STAGE_WAIT' && <p className='stage_wait_num'>当前您还有{listLength}笔订单</p>}
-      {
-        Object.keys(list).map((date) => {
-          return (
-            <>
-              {list[date].length > 0 && <p className='date'>{date}</p>}
-              {list[date].map((item: any, index: number) => {
-                return (
-                  <ListItem date={date} {...item} key={item.key} index={index} updateList={updateList} />
-                )
-              })}
-            </>
-          )
-        })
-      }
-    </ScrollView>
-  )
+
+  if (status === 'STAGE_WAIT') {
+    return (
+      <ScrollView
+        className='list'
+        scrollY
+      >
+        <p className='stage_wait_num'>当前您还有{filterList.length}笔订单</p>
+        {
+          <>
+            {filterList.map((item: any, index: number) => {
+              return (
+                <ListItem {...item} key={item.key} index={index} updateList={updateList} />
+              )
+            })}
+          </>
+        }
+      </ScrollView>
+    )
+  } else {
+    // 待付款、已完成 根据日期排
+    return (
+      <ScrollView
+        className='list'
+        scrollY
+      >
+        {
+          Object.keys(list).map((date) => {
+            return (
+              <>
+                {status !== 'STAGE_WAIT' && list[date].length > 0 && <p className='date'>{date}</p>}
+                {list[date].map((item: any, index: number) => {
+                  return (
+                    <ListItem date={date} {...item} key={item.key} index={index} updateList={updateList} />
+                  )
+                })}
+              </>
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }
 }
 
 const ListItem = (props: any) => {
   const { order, products, updateList, index, date } = props
-  const { pickCode, type, createdAt, total, id, paymentStatus, status } = order
+  const { pickCode, type, createdAt, total, id, paymentStatus, status, needPack } = order
   let typeName = '堂食'
-  if (type === TypeEnum.OUT) {
+  if (needPack) {
     typeName = '外带'
   }
   const time = formatDate(new Date(createdAt), 'hh:mm:ss')
@@ -166,9 +187,10 @@ const ListItem = (props: any) => {
         <View className='right'>
           <View className='price'>S$ {total}</View>
           {
-            status !== 'STAGE_DONE' && <View className={`btn ${type === TypeEnum.IN ? 'btnOut' : 'btnIn'}`} onClick={handleClick}>
+            status !== 'STAGE_DONE' && <View className={`btn ${needPack === TypeEnum.IN ? 'btnOut' : 'btnIn'}`} onClick={handleClick}>
             {paymentStatus === 'STATUS_UNPAID' ? '确认付款' : '备餐完成'}</View>
           }
+          {status === 'STAGE_DONE' && <Image src={successImg} className='success-img'/>}
         </View>
       </View>
     )
