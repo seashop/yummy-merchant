@@ -119,6 +119,12 @@
       .btnOut {
         background: linear-gradient(360deg, #2FAA61 0%, #75D12D 153.57%);
       }
+      .success-img {
+        width: 60px;
+        height: 60px;
+        right: 34px;
+        top: 109px;
+      }
     }
   }
   .makingListItem {
@@ -191,6 +197,15 @@
           justify-content: space-between;
           align-items: center;
           font-size: 30px;
+          .productName {
+            max-width: 480px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            align-self: flex-start;
+          }
         }
         .noData {
           height: 50px;
@@ -214,4 +229,7 @@
       text-align: center;
     }
   }
+}
+.taro-model__confirm {
+  color: #F24822 !important;
 }
