@@ -125,55 +125,60 @@ const ListItem = (props: any) => {
     isMaking = true
   }
   // if (index === 0) isMaking = true
-
-  const handleClick = () => {
-    Taro.showModal({
-      title: '提示',
-      content: paymentStatus === 'STATUS_UNPAID' ? '确认收款？' : '确认备餐？',
-      success: function (res) {
-        if (res.confirm) {
-          Taro.showLoading({title: '请稍等'})
-          try {
-            const value1 = Taro.getStorageSync('passport').data
-            const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
-            const value2 = Taro.getStorageSync('token')
-            const tokenStr = value2.access
-            Taro.request({
-              url: APIBasePath + path.mobile.updateOrder.replace('{innId}', innId).replace('{orderId}', id),
-              method: 'PATCH',
-              data: {
-                type: paymentStatus === 'STATUS_UNPAID' ? 'TYPE_PAID' : 'TYPE_MADE'
-              },
-              header: {
-                Authorization: 'Bearer ' + tokenStr,
-              },
-              success: (res: any) => {
-                console.log('updateOrder success--->', res)
-                if (res.statusCode === 200) {
-                  updateList(date, id)
-                } else {
-                  Taro.showToast({
-                    title: '更新订单失败',
-                    icon: 'error',
-                    duration: 2000
-                  })
-                }
-                Taro.hideLoading()
-              },
-              fail: (error: any) => {
-                console.log('updateOrder error--->', error)
-                Taro.hideLoading()
-              }
+  const handleClickCb = () => {
+    try {
+      Taro.showLoading({title: '请稍等'})
+      const value1 = Taro.getStorageSync('passport').data
+      const innId = value1.inns && value1.inns.length > 0 && value1.inns[0].id
+      const value2 = Taro.getStorageSync('token')
+      const tokenStr = value2.access
+      Taro.request({
+        url: APIBasePath + path.mobile.updateOrder.replace('{innId}', innId).replace('{orderId}', id),
+        method: 'PATCH',
+        data: {
+          type: paymentStatus === 'STATUS_UNPAID' ? 'TYPE_PAID' : 'TYPE_MADE'
+        },
+        header: {
+          Authorization: 'Bearer ' + tokenStr,
+        },
+        success: (res: any) => {
+          console.log('updateOrder success--->', res)
+          if (res.statusCode === 200) {
+            updateList(date, id)
+          } else {
+            Taro.showToast({
+              title: '更新订单失败',
+              icon: 'error',
+              duration: 2000
             })
-          } catch (error) {
-            console.log('updateOrder error--->', error)
-            Taro.hideLoading()
           }
-        } else if (res.cancel) {
+          Taro.hideLoading()
+        },
+        fail: (error: any) => {
+          console.log('updateOrder error--->', error)
+          Taro.hideLoading()
         }
-      }
-    })
-
+      })
+    } catch (error) {
+      console.log('updateOrder error--->', error)
+      Taro.hideLoading()
+    }
+  }
+  const handleClick = () => {
+    if (paymentStatus === 'STATUS_UNPAID') {
+      Taro.showModal({
+        title: '提示',
+        content: '确认收款？',
+        success: function (res) {
+          if (res.confirm) {
+            handleClickCb()
+          } else if (res.cancel) {
+          }
+        }
+      })
+    } else {
+      handleClickCb()
+    }
   }
 
   if (!isMaking) {
@@ -197,11 +202,11 @@ const ListItem = (props: any) => {
   } else {
     return (
       <View className='makingListItem'>
-        <View className='makingListItemContent'>
+        <View className={`makingListItemContent ${needPack ? 'typeOut' : 'typeIn'}`}>
           <View className='orderDetail'>
             <View className='left'>
               <View className='orderNum'>{pickCode}</View>
-              <View className='typeName'>{typeName}</View>
+              <View className={`typeName ${needPack ? 'typeOut' : 'typeIn'}`}>{typeName}</View>
             </View>
             <View className='price'>S$ {total}</View>
           </View>
@@ -221,7 +226,7 @@ const ListItem = (props: any) => {
             }
           </View>
         </View>
-        <View className='makingBtn' onClick={handleClick}>备餐完成</View>
+        <View className={`makingBtn ${needPack ? 'typeOut' : 'typeIn'}`} onClick={handleClick}>备餐完成</View>
       </View>
     )
   }
