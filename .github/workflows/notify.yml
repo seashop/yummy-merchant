@@ -2,8 +2,7 @@ name: Message Notify
 on: [push]
 jobs:
 
-  build:
-    name: Build
+  notification:
     runs-on: ubuntu-latest
     steps:
     - name: Discord notification
