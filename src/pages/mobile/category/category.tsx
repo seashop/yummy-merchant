@@ -1,5 +1,5 @@
 import React, { Component, PropsWithChildren } from 'react'
-import { AtBadge, AtFloatLayout, AtActivityIndicator } from 'taro-ui'
+import { AtBadge, AtFloatLayout, AtActivityIndicator, AtIcon } from 'taro-ui'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './category.scss'
@@ -162,6 +162,10 @@ export default class Category extends Component<PropsWithChildren> {
     })
   }
 
+  handleGoHome = () => {
+    Taro.navigateTo({url: '/pages/mobile/home/home'})
+  }
+
   render () {
     const totalPrice = this.state.selectedProductList.reduce((total, cur) => {
       return Number(Number(total) + (Number(cur.price) * Number(cur.count))).toFixed(2);
@@ -179,6 +183,7 @@ export default class Category extends Component<PropsWithChildren> {
         </View> */}
         <View className='bottomPart1' ref={this.bottomPartRef}>
           <View className='leftPart'>
+            <AtIcon value='home' size='60' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
             {
               this.state.selectedProductList.length > 0 ? <AtBadge value={this.state.selectedProductList.length}>
                 <Image src={cartImg} className='cartImg' onClick={this.handleShowCart} />

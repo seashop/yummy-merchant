@@ -138,6 +138,10 @@ const CategoryList = props => {
       let temp1 = []
       temp.forEach(item => {
         item.productList = productList.filter(product => product.category_id === item.category_id)
+        temp1.push({
+          type: 'category',
+          category_id: item
+        })
         temp1 = temp1.concat(item.productList)
       })
       setCategoryList([...temp])
@@ -172,10 +176,26 @@ const CategoryList = props => {
         upperThreshold={Threshold}
         onScroll={handleRightScroll}
       >
-        {
+        {/* {
           showsProductList.map(product => {
             return (
               <ProductItem {...product} key={'product-key-' + product.id} token={token} handleSelectedProductList={handleSelectedProductList} />
+            )
+          })
+        } */}
+        {
+          categoryList.map(category => {
+            return (
+              <View key={'product-parent-key-' + category.category_id}>
+                <View className='productCategoryTitle'>{category.title}</View>
+                {
+                  category.productList.map(product => {
+                    return (
+                      <ProductItem {...product} key={'product-key-' + product.id} token={token} handleSelectedProductList={handleSelectedProductList} />
+                    )
+                  })
+                }
+              </View>
             )
           })
         }

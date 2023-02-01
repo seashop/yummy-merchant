@@ -11,7 +11,7 @@ export default class Login extends Component<PropsWithChildren> {
     username: 'dev',
     password: 'youShouldChnageMe',
     isLoading: false,
-    checked: false,
+    checked: true,
   }
 
   componentWillMount () { }
