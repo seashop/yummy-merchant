@@ -27,15 +27,25 @@ const CategoryList = props => {
 
   const { otherHeight, handleSelectedProductList } = props;
   const [height, setHeight] = useState(0)
-  const [activeId, setActiveId] = useState(0)
+  const [activeId, setActiveId] = useState('')
   const [categoryList, setCategoryList] = useState([])
   const [productList, setProductList] = useState([])
   const [showsProductList, setShowsProductList] = useState([])
+  const [heightArr, setHeightArr] = useState([])
   const [innId, setInnId] = useState('')
   const [token, setToken] = useState('')
 
   const handleRightScroll = (e) => {
-    console.log('rightScroll--->', e.detail.scrollTop)
+    console.log('rightScroll--->', e.detail)
+    const scrollTop = e.detail.scrollTop
+    for (let i = 0; i < heightArr.length; i++) {
+      if (scrollTop < heightArr[i]) {
+        if (activeId !== categoryList[i].category_id) {
+          setActiveId(categoryList[i].category_id)
+        }
+        break
+      }
+    }
   }
 
   const handleCategoryChange = (val) => {
@@ -146,6 +156,16 @@ const CategoryList = props => {
       })
       setCategoryList([...temp])
       setShowsProductList(temp1)
+      const arr = categoryList.reduce((total, cur) => {
+        if (total.length === 0) {
+          total.push(25 + (cur.productList.length * 100))
+        } else {
+          total.push(total[total.length - 1] + 25 + (cur.productList.length * 100))
+        }
+        return total
+      }, [])
+      setHeightArr(arr)
+      console.log('arr--->', arr)
     }
   }, [categoryList.length, productList.length])
   
@@ -186,7 +206,7 @@ const CategoryList = props => {
         {
           categoryList.map(category => {
             return (
-              <View key={'product-parent-key-' + category.category_id}>
+              <View key={'product-parent-key-' + category.category_id} id={category.category_id}>
                 <View className='productCategoryTitle'>{category.title}</View>
                 {
                   category.productList.map(product => {
