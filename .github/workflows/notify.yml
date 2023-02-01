@@ -20,7 +20,7 @@ jobs:
         msg_type: text
         content: |
           text: |
-            代码提交通知 {{ GITHUB_SERVER_URL }}/{{ GITHUB_REPOSITORY }}
+            代码提交通知
             repository: ${{ github.repository }}
             committer: ${{ github.actor }}
             compare: ${{ github.event.compare }}
