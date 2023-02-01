@@ -181,13 +181,13 @@ const ListItem = (props: any) => {
       <View className='listItem'>
         <View className='left'>
           <View className='orderNum'>{pickCode}</View>
-          <View className='typeName'>{typeName}</View>
+          <View className={`typeName  ${needPack ? 'typeOut' : 'typeIn'}`}>{typeName}</View>
           <View className='orderTime'>{time}</View>
         </View>
         <View className='right'>
           <View className='price'>S$ {total}</View>
           {
-            status !== 'STAGE_DONE' && <View className={`btn ${needPack === TypeEnum.IN ? 'btnOut' : 'btnIn'}`} onClick={handleClick}>
+            status !== 'STAGE_DONE' && <View className={`btn ${needPack ? 'btnOut' : 'btnIn'}`} onClick={handleClick}>
             {paymentStatus === 'STATUS_UNPAID' ? '确认付款' : '备餐完成'}</View>
           }
           {status === 'STAGE_DONE' && <Image src={successImg} className='success-img'/>}

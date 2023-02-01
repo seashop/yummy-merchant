@@ -67,8 +67,14 @@
         font-weight: 700;
         font-size: 30px;
         line-height: 40px;
-        color: #F24822;
-        border: 3px solid #F24822;
+        &.typeOut {
+          border: 3px solid #32B768;
+          color: #32B768;
+        }
+        &.typeIn {
+          border: 3px solid #F24822;
+          color: #F24822;
+        }
       }
       .orderTime {
         position: absolute;
