@@ -3,6 +3,7 @@ module.exports = {
     NODE_ENV: '"production"'
   },
   defineConstants: {
+    APIBasePath: JSON.stringify('https://dev-ygo.fly.dev/v1')
   },
   mini: {},
   h5: {

@@ -1,0 +1,86 @@
+.resultPage {
+  width: 100%;
+  position: relative;
+  padding-bottom: 50px;
+  .bottomPart {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+  }
+  .homeIcon {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+  }
+  .listIcon {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+  }
+  .status {
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    line-height: 150px;
+    font-weight: 700;
+    font-size: 64px;
+    color: #F24822;
+  }
+  .orderNum {
+    width: 100%;
+    height: 90px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 65px;
+    line-height: 90px;
+  }
+  .price {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 50px;
+    margin-top: 30px;
+  }
+  .time {
+    width: 100%;
+    text-align: center;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 40px;
+    margin-top: 48px;
+  }
+  .productList {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .priceDetail {
+    width: 100%;
+    margin-bottom: 70px;
+    .priceDetailItem {
+      width: 100%;
+      height: 60px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 30px;
+      .detailLeft {
+        flex: 1;
+        text-align: left;
+        line-height: 60px;
+        font-weight: 400;
+        font-size: 30px;
+      }
+      .detailRight {
+        text-align: right;
+        flex: 1;
+        line-height: 60px;
+        font-weight: 400;
+        font-size: 30px;
+      }
+    }
+  }
+}

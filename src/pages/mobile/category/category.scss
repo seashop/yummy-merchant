@@ -1,11 +1,120 @@
 .categoryPage {
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  position: relative;
   .handlePart {
     width: 100%;
     text-align: right;
     .myOrderBtn {
       margin-right: 10px;
     }
+  }
+  .orderInfo {
+    width: 100%;
+    height: 150px;
+    background-color: #E8E8E8;
+    color: #F24822;
+    font-size: 64px;
+    line-height: 150px;
+    box-sizing: border-box;
+    padding-left: 30px;
+    font-weight: 700;
+  }
+  .bottomPart {
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    .totalPrice {
+      width: 500px;
+      background-color: rgba(25, 53, 87, 1);
+      color: white;
+      font-size: 30px;
+      box-sizing: border-box;
+      padding-left: 30px;
+      line-height: 100px;
+      font-weight: bold;
+    }
+    .orderBtn {
+      width: 250px;
+      background-color: #FFC165;
+      color: #061527;
+      font-size: 30px;
+      text-align: center;
+      line-height: 100px;
+    }
+  }
+  .bottomPart1 {
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    box-sizing: border-box;
+    padding: 0 30px;
+    justify-content: space-between;
+    background-color: white;
+    border-top: 1px solid #f5f5f5;
+    .leftPart {
+      width: 400px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      .homeIcon {
+        margin-right: 30px;
+      }
+      .cartImg {
+        width: 60px;
+        height: 60px;
+        margin-right: 38px;
+      }
+      .totalPrice {
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 36px;
+      }
+    }
+    .rightPart {
+      height: 78px;
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 36px;
+      text-align: center;
+      border-radius: 15px;
+      background-color: rgba(242,72,34, 0.3);
+      color: white;
+      line-height: 78px;
+      box-sizing: border-box;
+      padding: 0 10px;
+    }
+    .active {
+      background-color: #F24822;
+    }
+  }
+  .mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .maskHide {
+    display: none;
   }
 }

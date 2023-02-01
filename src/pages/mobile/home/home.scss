@@ -1,17 +1,87 @@
 .home {
   width: 100%;
-  height: 100%;
   position: relative;
-  .textPart {
-    margin-left: 53px;
+  padding-bottom: 150px;
+  .innInfo {
+    width: 100%;
+    height: 120px;
+    box-sizing: border-box;
+    padding: 40px 30px;
+    font-family: 'PingFang SC';
+    .welcome {
+      font-size: 38px;
+      color: #909090;
+      font-weight: 500;
+    }
+    .innName {
+      font-size: 38px;
+      color: black;
+      font-weight: 500;
+    }
+  }
+  // .textPart {
+  //   margin-left: 53px;
+  //   padding-top: 0px;
+  //   position: relative;
+  //   .text {
+  //     height: 70px;
+  //     line-height: 70px;
+  //     font-family: 'PingFang SC';
+  //     font-style: normal;
+  //     font-weight: 400;
+  //     font-size: 60px;
+  //   }
+    .home0Img {
+      position: absolute;
+      right: 60px;
+      width: 360px;
+      top: 40px;
+    }
+  // }
+  .homeHeadImg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  .innLogo {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: 80px;
+    left: 315px;
+    z-index: 2;
+  }
+  .innInfo1 {
     padding-top: 200px;
-    .text {
-      height: 70px;
-      line-height: 70px;
+    width: 100%;
+    z-index: 2;
+    .innName {
+      width: 100%;
+      text-align: center;
       font-family: 'PingFang SC';
       font-style: normal;
       font-weight: 400;
-      font-size: 60px;
+      font-size: 38px;
+      line-height: 154.4%;
+    }
+    .tongji {
+      margin-top: 32px;
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      .tongjiItem {
+        flex: 1;
+        text-align: center;
+        .itemNum {
+          color: #F24822;
+        }
+      }
+      .rightLine {
+        border-right: 1px solid #F0F0F0;
+      }
     }
   }
   .handlePart {
@@ -60,13 +130,21 @@
       }
     }
     .rightImg {
-      margin-top: 93px;
+      // margin-top: 93px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       flex: 1;
       flex-basis: 280px;
+      height: 361.07px;
     }
   }
-  .orderPart {
+  .helpPart {
     margin-top: 71px;
+    background-color: #FFF1BE;
+  }
+  .orderPart {
     background: #DBBEFF;
   }
   .reportPart {
@@ -84,6 +162,10 @@
       font-size: 48px;
       line-height: 60px;
       color: #B8B8B8;
+    }
+    .rightImg {
+      justify-content: flex-start;
+      margin-top: -30px;
     }
   }
 }

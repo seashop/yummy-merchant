@@ -7,11 +7,32 @@
   // right: 0;
   width: 750px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  // align-items: flex-start;
   background-color: #F8F8F8;
+  .date {
+    margin-left: 32px;
+    margin-top: 11px;
+    margin-bottom: 8px;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 41px;
+    color: #000000;
+  }
+  .stage_wait_num {
+    padding: 40px 30px;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 82px;
+    color: #F24822;
+    background: #E8E8E8;
+  }
   .listItem {
     width: 100%;
     height: 200px;
@@ -46,11 +67,18 @@
         font-weight: 700;
         font-size: 30px;
         line-height: 40px;
-        color: #F24822;
-        border: 3px solid #F24822;
+        &.typeOut {
+          border: 3px solid #32B768;
+          color: #32B768;
+        }
+        &.typeIn {
+          border: 3px solid #F24822;
+          color: #F24822;
+        }
       }
       .orderTime {
         position: absolute;
+        width: 300px;
         left: 32px;
         top: 128px;
         font-family: 'Nunito';
@@ -89,7 +117,7 @@
         font-weight: 700;
         font-size: 30px;
         color: #FFFFFF;
-        border-radius: 5px;
+        border-radius: 15px;
       }
       .btnIn {
         background: linear-gradient(360deg, #E64433 0%, rgba(230, 137, 51, 0.74) 153.57%);
@@ -97,6 +125,133 @@
       .btnOut {
         background: linear-gradient(360deg, #2FAA61 0%, #75D12D 153.57%);
       }
+      .success-img {
+        width: 60px;
+        height: 60px;
+        right: 34px;
+        top: 109px;
+      }
     }
   }
+  .makingListItem {
+    width: 100%;
+    background: #F8F8F8;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    .makingListItemContent {
+      width: 100%;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      padding: 0 30px;
+      box-sizing: border-box;
+      &.typeIn {
+        border: 3px solid #F24822;
+      }
+      &.typeOut {
+        border: 3px solid #32B768;
+      }
+      .orderDetail {
+        width: 100%;
+        margin-top: 56px;
+        height: 90px;
+        border-bottom: 1px solid #E8E8E8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .left {
+          position: relative;
+          height: 90px;
+          .orderNum {
+            position: absolute;
+            left: 32px;
+            top: 0px;
+            font-family: 'Nunito';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 65px;
+            line-height: 89px;
+            color: #000000;
+          }
+          .typeName {
+            position: absolute;
+            left: 220px;
+            top: 10px;
+            width: 70px;
+            text-align: center;
+            padding: 0 5px;
+            font-family: 'Nunito';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 30px;
+            line-height: 40px;
+            &.typeOut {
+              border: 3px solid #32B768;
+              color: #32B768;
+            }
+            &.typeIn {
+              border: 3px solid #F24822;
+              color: #F24822;
+            }
+          }
+        }
+        .price {
+          font-family: 'Nunito';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 36px;
+          line-height: 49px;
+          color: #000000;
+        }
+      }
+      .productDetail {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        .productItem {
+          width: 100%;
+          line-height: 60px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 30px;
+          .productName {
+            max-width: 480px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            align-self: flex-start;
+          }
+        }
+        .noData {
+          height: 50px;
+          font-size: 30px;
+          text-align: center;
+          width: 100%;
+          line-height: 50px;
+        }
+      }
+    }
+    .makingBtn {
+      width: 100%;
+      height: 90px;
+      line-height: 90px;
+      background-color: #F24822;
+      color: white;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 40px;
+      text-align: center;
+      &.typeOut {
+        background-color: #32B768;
+      }
+      &.typeIn {
+        background-color: #F24822;
+      }
+    }
+  }
+}
+.taro-model__confirm {
+  color: #F24822 !important;
 }
