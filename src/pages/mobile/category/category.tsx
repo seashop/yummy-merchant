@@ -6,6 +6,7 @@ import './category.scss'
 import path from '../../../utils/path'
 import CategoryList from '../../../components/mobile/categorylist/CategoryList'
 import cartImg from '../../../assets/imgs/cart.png'
+import homeIcon from '../../../assets/imgs/homeicon.png'
 import emptyCartImg from '../../../assets/imgs/emptycart.png'
 import CartList from '../../../components/mobile/cartlist/CartList'
 
@@ -122,6 +123,10 @@ export default class Category extends Component<PropsWithChildren> {
       Taro.request({
         url: APIBasePath + path.mobile.getOrderList.replace('{innId}', innId),
         method: 'GET',
+        data: {
+          ["filter.status"]: 'STAGE_TODO',
+          sort: '-created_at'
+        },
         header: {
           Authorization: 'Bearer ' + tokenStr,
         },
@@ -183,7 +188,7 @@ export default class Category extends Component<PropsWithChildren> {
         </View> */}
         <View className='bottomPart1' ref={this.bottomPartRef}>
           <View className='leftPart'>
-            <AtIcon value='home' size='60' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+            <Image src={homeIcon} className='homeIcon' onClick={this.handleGoHome} />
             {
               this.state.selectedProductList.length > 0 ? <AtBadge value={this.state.selectedProductList.length}>
                 <Image src={cartImg} className='cartImg' onClick={this.handleShowCart} />
