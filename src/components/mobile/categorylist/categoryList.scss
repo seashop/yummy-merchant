@@ -21,7 +21,7 @@
     }
   }
   .productList {
-    flex: 1 0 400px;
+    // flex: 1 0 400px;
     .productCategoryTitle {
       padding-left: 10px;
       font-family: 'Nunito';
@@ -36,11 +36,12 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  // align-items: center;
   box-sizing: border-box;
   padding: 20px 10px;
   .img {
     display: block;
+    margin-right: 23px;
     // width: 250px;
   }
   .rightPart {
@@ -49,12 +50,17 @@
     display: flex;
     align-items: flex-end;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     .productName {
       color: #333;
       font-size: 30px;
       font-weight: bolder;
       align-self: flex-start;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
     .productPrice {
       margin-top: 10px;
