@@ -124,7 +124,7 @@ const CategoryList = props => {
         setHeight(screenHeight - otherHeight)
         console.log('height--->', screenHeight, otherHeight)
       } catch (error) {
-        
+
       }
     }
   }, [otherHeight])
@@ -168,7 +168,7 @@ const CategoryList = props => {
       console.log('arr--->', arr)
     }
   }, [categoryList.length, productList.length])
-  
+
   return (
     <View className='categoryList'>
       <ScrollView
