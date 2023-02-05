@@ -1,12 +1,15 @@
 .categoryList {
+  position: relative;
   width: 100%;
+  flex: 1;
   color: black;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   .leftPart {
-    flex: 1;
+    width: 200px;
+    height: 100%;
     background-color: #F5F5F5;
     .categoryItem {
       width: 100%;
@@ -21,7 +24,12 @@
     }
   }
   .productList {
-    // flex: 1 0 400px;
+    position: absolute;
+    top: 0px;
+    bottom: 100px;
+    left: 200px;
+    right: 0;
+    width: auto;
     .productCategoryTitle {
       padding-left: 10px;
       font-family: 'Nunito';
@@ -73,6 +81,7 @@
     .buyCount {
       height: 40px;
       line-height: 40px;
+      margin-right: 20px;
     }
   }
 }

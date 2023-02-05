@@ -100,7 +100,7 @@ export default class Result extends Component<PropsWithChildren> {
           {
             productList.map((item: any) => {
               return (
-                <ProductItem {...item} title={item.productTitle} key={'product-key-' + item.id} token={token} handleSelectedProductList={() => {}} canEdit={false} />
+                <ProductItem item={item} title={item.productTitle} key={'product-key-' + item.id} token={token} handleSelectedProductList={() => {}} canEdit={false} />
               )
             })
           }
