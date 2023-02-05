@@ -29,13 +29,34 @@ export default class Category extends Component<PropsWithChildren> {
 
   componentDidMount () {
     setTimeout(() => {
-      const height1 = this.orderInfoRef.current.clientHeight
-      const height2 = this.bottomPartRef.current.clientHeight
-      console.log('height0--->', height1, height2)
-      this.setState({
-        otherHeight: height1 + height2
-      })
-    }, 300)
+      let topHeight = 0
+      let bottomHeight = 0
+      Taro.createSelectorQuery().select('#topPart').boundingClientRect((res) => {
+        console.log('topPart--->', res)
+        topHeight = res.height
+      }).exec()
+      const bottomQuery = Taro.createSelectorQuery()
+      bottomQuery.select('#bottomPart').fields({
+        id: true,
+        size: true,
+      }, function (res) {
+        console.log('bottomPart--->', res)
+        bottomHeight = res.height
+      }).exec()
+      const timer = setInterval(() => {
+        if (topHeight > 0 && bottomHeight > 0) {
+          clearInterval(timer)
+          try {
+            const res = Taro.getSystemInfoSync()
+            const screenHeight = res.windowHeight
+            console.log('screenHeight--->', screenHeight, topHeight, bottomHeight)
+            this.setState({otherHeight: screenHeight - topHeight - bottomHeight})
+          } catch (error) {
+            
+          }
+        }
+      }, 200)
+    }, 200)
     this.loadOrderList()
   }
 
@@ -180,13 +201,13 @@ export default class Category extends Component<PropsWithChildren> {
         {/* <View className='handlePart'>
           <View className='myOrderBtn'>我的订单</View>
         </View> */}
-        <View className='orderInfo' ref={this.orderInfoRef}>前一单取餐码: {this.state.prevOrderNum}</View>
+        <View className='orderInfo' id='topPart' ref={this.orderInfoRef}>前一单取餐码: {this.state.prevOrderNum}</View>
         <CategoryList otherHeight={this.state.otherHeight} handleSelectedProductList={this.handleSelectedProductList} />
         {/* <View className='bottomPart' ref={this.bottomPartRef}>
           <View className='totalPrice'>Total Price: S$ {totalPrice}</View>
           <View className='orderBtn' onClick={this.handleOrder}>Order Now</View>
         </View> */}
-        <View className='bottomPart1' ref={this.bottomPartRef}>
+        <View className='bottomPart1' id='bottomPart' ref={this.bottomPartRef}>
           <View className='leftPart'>
             <Image src={homeIcon} className='homeIcon' onClick={this.handleGoHome} />
             {
