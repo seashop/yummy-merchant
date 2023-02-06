@@ -24,4 +24,3 @@ jobs:
             committer: ${{ github.actor }}
             compare: ${{ github.event.compare }}
             job status: ${{ job.status }}
-            website: https://seashop.github.io/yummy-h5/
