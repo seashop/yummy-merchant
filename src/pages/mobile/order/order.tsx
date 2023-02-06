@@ -1,10 +1,10 @@
 import { Component, PropsWithChildren } from 'react'
-import { View, Swiper, SwiperItem } from '@tarojs/components'
-import { AtIcon } from 'taro-ui'
+import { View, Swiper, SwiperItem, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Tabs from '../../../components/mobile/tabs/tabs'
 import path from '../../../utils/path'
 import List, { TypeEnum, StatusEnum } from '../../../components/mobile/list/list'
+import HomeIcon from '../../../assets/imgs/homeicon.png'
 import './order.scss'
 
 
@@ -114,7 +114,7 @@ export default class Order extends Component<PropsWithChildren> {
     return (
       <View className='order'>
         <View className='bottomPart'>
-          <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+          <Image src={HomeIcon} className='homeIcon' onClick={this.handleGoHome}></Image>
         </View>
         <Tabs current={this.state.current} tabList={this.state.tabList} onChange={this.handleChange} />
         {/* <Swiper

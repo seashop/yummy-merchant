@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { View, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
 import Taro from '@tarojs/taro'
+import { productAction } from '../../../store/actions/product.actions'
 import './categoryList.scss'
 import path from '../../../utils/path.ts'
 import MerchantImage from '../image/image'
+import { throttle } from '../../..//utils/utils'
 
-const Threshold = 15
+// const Threshold = 15
 
 // const categoryList = [
 //   {
@@ -26,19 +29,64 @@ const Threshold = 15
 const CategoryList = props => {
 
   const { otherHeight, handleSelectedProductList } = props;
-  const [height, setHeight] = useState(0)
-  const [activeId, setActiveId] = useState(0)
+  // const [height, setHeight] = useState(0)
+  const [activeId, setActiveId] = useState('')
   const [categoryList, setCategoryList] = useState([])
   const [productList, setProductList] = useState([])
-  const [showsProductList, setShowsProductList] = useState([])
+  // const [showsProductList, setShowsProductList] = useState([])
+  // const [heightArr, setHeightArr] = useState([])
   const [innId, setInnId] = useState('')
   const [token, setToken] = useState('')
 
-  const handleRightScroll = (e) => {
-    console.log('rightScroll--->', e.detail.scrollTop)
-  }
+  const [offsetArr, setOffsetArr] = useState([])
+  const [scrollTop, setScrollTop] = useState(0)
+  const [data, setData] = useState([])
+  const ref = useRef(null)
+  const scrollTag = useSelector(state => {
+    return state.productReducer.scrollTag
+  })
+
+  console.log('scrollTag--->', scrollTag)
+
+  const dispatch = useDispatch()
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleRightScroll = useCallback(throttle((e) => {
+    const offsetTop = e.detail.scrollTop
+    console.log('offsetTop--->', offsetTop, categoryList[0].id)
+    if (scrollTag) {
+      return dispatch({
+        type: productAction.CHANGE_SCROLL_TAG,
+        payload: {
+          scrollTag: false
+        }
+      })
+    }
+    for (let i = 0; i < offsetArr.length; i++) {
+      if (i === offsetArr.length - 1) {
+        if (offsetTop >= offsetArr[i]) {
+          scrollCategoryChange(categoryList[i].id)
+          break
+        }
+      }
+      if (offsetTop >= offsetArr[i] && offsetTop <= offsetArr[i + 1]) {
+        scrollCategoryChange(categoryList[i].id)
+        break
+      }
+    }
+  }, 200), [scrollTop, offsetArr, scrollTag, categoryList])
 
   const handleCategoryChange = (val) => {
+    setActiveId(val)
+    dispatch({
+      type: productAction.CHANGE_SCROLL_TAG,
+      payload: {
+        scrollTag: true
+      }
+    })
+  }
+
+  const scrollCategoryChange =(val) => {
     setActiveId(val)
   }
 
@@ -107,19 +155,6 @@ const CategoryList = props => {
   }
 
   useEffect(() => {
-    if (otherHeight > 0) {
-      try {
-        const res = Taro.getSystemInfoSync()
-        const screenHeight = res.windowHeight
-        setHeight(screenHeight - otherHeight)
-        console.log('height--->', screenHeight, otherHeight)
-      } catch (error) {
-        
-      }
-    }
-  }, [otherHeight])
-
-  useEffect(() => {
     loadBaseData()
     // loadCategoryData()
     // loadProductData()
@@ -134,30 +169,78 @@ const CategoryList = props => {
 
   useEffect(() => {
     if (categoryList.length > 0 && productList.length > 0) {
-      const temp = [...categoryList]
-      let temp1 = []
-      temp.forEach(item => {
-        item.productList = productList.filter(product => product.category_id === item.category_id)
-        temp1.push({
-          type: 'category',
-          category_id: item
+      let temp2 = []
+      categoryList.forEach(item => {
+        temp2.push({
+          ...item,
+          tag: 1
         })
-        temp1 = temp1.concat(item.productList)
+        temp2 = temp2.concat(productList.filter(product => product.catId === item.id))
       })
-      setCategoryList([...temp])
-      setShowsProductList(temp1)
+      setData(temp2)
     }
-  }, [categoryList.length, productList.length])
-  
+  }, [categoryList, productList, categoryList.length, productList.length])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (data.length > 0) {
+        const temp = []
+        const dataTemp = data.filter(item => item.tag === 1)
+        const firstQuery = Taro.createSelectorQuery()
+        console.log('data0--->', dataTemp[0])
+        firstQuery.select('#category-' + dataTemp[0].id).fields({
+          id: true,
+          rect: true,
+        }, function (res1) {
+          let top = 0
+          top = res1.top
+          for (let i = 0; i < dataTemp.length; i++) {
+            const item = dataTemp[i];
+            // temp.push(document.getElementById(item.id).offsetTop);
+            (function (obj, index) {
+              const query = Taro.createSelectorQuery()
+              query.select('#category-' + obj.id).fields({
+                id: true,
+                rect: true,
+              }, function (res) {
+                console.log('queryNode--->', res, top)
+                temp.push(res.top - top)
+                if (index === dataTemp.length - 1) {
+                  setOffsetArr(temp)
+                  console.log('layouteffect--->', temp)
+                }
+              }).exec()
+            })(item, i);
+          }
+        }).exec()
+      }
+    }, 200)
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+      }
+    }
+  }, [data, data.length])
+
+  useEffect(() => {
+    if (scrollTag === false) return () => {}
+    const index = categoryList.findIndex(item => item.id === activeId)
+    if (offsetArr.length > 0) {
+      console.log('index--->', offsetArr[index])
+      if (Taro.ENV_TYPE.WEAPP === Taro.getEnv()) {
+        setScrollTop(offsetArr[index])
+      }
+      if (ref.current) {
+        ref.current.scrollTop = offsetArr[index]
+      }
+    }
+  }, [activeId, offsetArr, categoryList, scrollTag])
+
   return (
     <View className='categoryList'>
       <ScrollView
         className='leftPart'
-        style={{height}}
-        scrollWithAnimation
         scrollY
-        lowerThreshold={Threshold}
-        upperThreshold={Threshold}
       >
         {
           categoryList.map(item => {
@@ -169,34 +252,21 @@ const CategoryList = props => {
       </ScrollView>
       <ScrollView
         className='productList'
-        style={{height}}
+        id='productList'
+        style={{height: otherHeight}}
         scrollWithAnimation
         scrollY
-        lowerThreshold={Threshold}
-        upperThreshold={Threshold}
+        scrollTop={scrollTop}
         onScroll={handleRightScroll}
+        ref={ref}
       >
-        {/* {
-          showsProductList.map(product => {
-            return (
-              <ProductItem {...product} key={'product-key-' + product.id} token={token} handleSelectedProductList={handleSelectedProductList} />
-            )
-          })
-        } */}
         {
-          categoryList.map(category => {
-            return (
-              <View key={'product-parent-key-' + category.category_id}>
-                <View className='productCategoryTitle'>{category.title}</View>
-                {
-                  category.productList.map(product => {
-                    return (
-                      <ProductItem {...product} key={'product-key-' + product.id} token={token} handleSelectedProductList={handleSelectedProductList} />
-                    )
-                  })
-                }
-              </View>
-            )
+          data.map(item => {
+            if (item.tag === 1) {
+              return <View id={'category-' + item.id} key={'product-parent-key-' + item.id} className='productCategoryTitle'>{item.title}</View>
+            } else {
+              return <ProductItem item={item} key={'product-key-' + item.id} token={token} handleSelectedProductList={handleSelectedProductList} />
+            }
           })
         }
       </ScrollView>
@@ -217,7 +287,8 @@ const CategoryItem = props => {
 }
 
 export const ProductItem = props => {
-  const { imgIds, price, title, token, stock, handleSelectedProductList, id, canEdit = true } = props
+  const { item, canEdit = true, handleSelectedProductList, token } = props
+  const { imgIds, price, title,  stock,  id } = item
   const [count, setCount] = useState(0)
   const imgId = imgIds.length > 0 ? imgIds[0] : ''
   const handleBuyCountChange = val => {

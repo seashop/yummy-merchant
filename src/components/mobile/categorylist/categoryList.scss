@@ -1,12 +1,15 @@
 .categoryList {
+  position: relative;
   width: 100%;
+  flex: 1;
   color: black;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   .leftPart {
-    flex: 1;
+    width: 200px;
+    height: 100%;
     background-color: #F5F5F5;
     .categoryItem {
       width: 100%;
@@ -21,7 +24,12 @@
     }
   }
   .productList {
-    flex: 1 0 400px;
+    position: absolute;
+    top: 0px;
+    bottom: 100px;
+    left: 200px;
+    right: 0;
+    width: auto;
     .productCategoryTitle {
       padding-left: 10px;
       font-family: 'Nunito';
@@ -36,11 +44,12 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  // align-items: center;
   box-sizing: border-box;
   padding: 20px 10px;
   .img {
     display: block;
+    margin-right: 23px;
     // width: 250px;
   }
   .rightPart {
@@ -49,12 +58,17 @@
     display: flex;
     align-items: flex-end;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     .productName {
       color: #333;
       font-size: 30px;
       font-weight: bolder;
       align-self: flex-start;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
     .productPrice {
       margin-top: 10px;
@@ -67,6 +81,7 @@
     .buyCount {
       height: 40px;
       line-height: 40px;
+      margin-right: 20px;
     }
   }
 }

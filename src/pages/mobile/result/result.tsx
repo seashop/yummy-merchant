@@ -1,10 +1,11 @@
 import { Component, PropsWithChildren } from 'react'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import './result.scss'
 import { ProductItem } from '../../../components/mobile/categorylist/CategoryList'
 import path from '../../../utils/path'
+import HomeIcon from '../../../assets/imgs/homeicon.png'
 
 export default class Result extends Component<PropsWithChildren> {
 
@@ -79,10 +80,11 @@ export default class Result extends Component<PropsWithChildren> {
   render () {
     const { orderDetail, productList, token } = this.state
     return (
-      <ScrollView scrollY style={{height: 900}} className='resultPage'>
+      <ScrollView scrollY className='resultPage'>
         <View className='bottomPart'>
-          <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
-          <AtIcon value='bullet-list' size='40' color='#333' className='listIcon' onClick={this.handleGoList}></AtIcon>
+          <Image src={HomeIcon} className='homeIcon' onClick={this.handleGoHome}></Image>
+          {/* <AtIcon value='home' size='40' color='#333' className='homeIcon' onClick={this.handleGoHome}></AtIcon>
+          <AtIcon value='bullet-list' size='40' color='#333' className='listIcon' onClick={this.handleGoList}></AtIcon> */}
         </View>
         <View className='status'>Ordered Successfully</View>
         <View className='orderNum'>{orderDetail.pickCode}</View>
@@ -90,7 +92,6 @@ export default class Result extends Component<PropsWithChildren> {
         <View className='time'>Order Time: {orderDetail.createdAt && orderDetail.createdAt.replace('T', ' ')}</View>
         <ScrollView
           className='productList'
-          style={{height: 400}}
           scrollWithAnimation
           scrollY
           lowerThreshold={15}
@@ -99,7 +100,7 @@ export default class Result extends Component<PropsWithChildren> {
           {
             productList.map((item: any) => {
               return (
-                <ProductItem {...item} title={item.productTitle} key={'product-key-' + item.id} token={token} handleSelectedProductList={() => {}} canEdit={false} />
+                <ProductItem item={item} title={item.productTitle} key={'product-key-' + item.id} token={token} handleSelectedProductList={() => {}} canEdit={false} />
               )
             })
           }
@@ -126,6 +127,7 @@ export default class Result extends Component<PropsWithChildren> {
             <View className='detailLeft'>Total</View>
             <View className='detailRight'>S$ {orderDetail.total}</View>
           </View>
+          <View className='confirm-btn' onClick={this.handleGoList}>确定</View>
         </View>
       </ScrollView>
     )
