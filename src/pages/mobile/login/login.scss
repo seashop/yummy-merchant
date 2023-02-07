@@ -122,3 +122,20 @@
     }
   }
 }
+
+@media only screen and (min-width: 750px) {
+  .login {
+    .bg1 {
+      height: 450px;
+    }
+    .loginImg {
+      height: 450px;
+    }
+    .loginForm {
+      margin-top: 40px;
+      .input {
+        margin-bottom: 50px;
+      }
+    }
+  }
+}
