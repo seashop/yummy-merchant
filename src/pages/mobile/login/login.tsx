@@ -18,6 +18,8 @@ export default class Login extends Component<PropsWithChildren> {
 
   componentDidMount () {
     console.log('apibasepath--->', APIBasePath)
+    alert(document.documentElement.clientHeight)
+    alert(document.documentElement.clientWidth)
   }
 
   componentWillUnmount () { }
