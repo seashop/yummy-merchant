@@ -125,7 +125,6 @@
 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (-webkit-min-device-pixel-ratio: 1) {
   .login {
-    color: green;
     .bg1 {
       height: 450px;
     }
@@ -133,6 +132,7 @@
       height: 450px;
     }
     .loginForm {
+      color: green;
       margin-top: 40px;
       .input {
         margin-bottom: 50px;
