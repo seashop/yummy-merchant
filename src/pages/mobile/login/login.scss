@@ -139,3 +139,23 @@
     }
   }
 }
+
+
+@media only screen and (min-device-width : 744px) {
+  .login {
+    color: red;
+    .bg1 {
+      height: 450px;
+    }
+    .loginImg {
+      height: 450px;
+    }
+    .loginForm {
+      margin-top: 40px;
+      .input {
+        margin-bottom: 50px;
+      }
+    }
+  }
+}
+
