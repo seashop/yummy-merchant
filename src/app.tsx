@@ -5,7 +5,12 @@ import './app.scss'
 
 class App extends Component<PropsWithChildren> {
 
-  componentDidMount () {}
+  componentDidMount () {
+    console.debug({
+      GitHash: process.env.GIT_HASH,
+      BuildDate: process.env.BUILD_DATE
+    })
+  }
 
   componentDidShow () {}
 
