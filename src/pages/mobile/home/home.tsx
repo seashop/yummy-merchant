@@ -138,6 +138,10 @@ export default class Home extends Component<PropsWithChildren> {
           <Image src={home4Img} />
           </View>
         </View>
+        <View className='build-info'>
+          <View>version: {process.env.GIT_HASH}</View>
+          <View>buildDate: {process.env.BUILD_DATE}</View>
+        </View>
       </View>
     )
   }
