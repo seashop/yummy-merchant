@@ -1,6 +1,10 @@
+import { gitHash, buildDate } from "./util";
+
 module.exports = {
   env: {
-    NODE_ENV: '"production"'
+    NODE_ENV: '"production"',
+    GIT_HASH: JSON.stringify(gitHash()),
+    BUILD_DATE: JSON.stringify(buildDate())
   },
   defineConstants: {
     APIBasePath: JSON.stringify('https://dev-ygo.fly.dev/v1')
