@@ -52,7 +52,7 @@ export default class Category extends Component<PropsWithChildren> {
             console.log('screenHeight--->', screenHeight, topHeight, bottomHeight)
             this.setState({otherHeight: screenHeight - topHeight - bottomHeight})
           } catch (error) {
-            
+
           }
         }
       }, 200)
@@ -156,7 +156,7 @@ export default class Category extends Component<PropsWithChildren> {
             const orderList = res.data.orderInfos || [];
             if (orderList.length > 0) {
               const orderItem = orderList.pop()
-              this.setState({prevOrderNum: orderItem.order.pickCode})
+              // this.setState({prevOrderNum: orderItem.order.pickCode})
             }
           } else {
             Taro.showToast({
@@ -170,6 +170,19 @@ export default class Category extends Component<PropsWithChildren> {
           console.log('loadOrderList error--->', error)
         }
       })
+
+      Taro.request({
+        url: APIBasePath + path.mobile.getLastPickCode.replace('{innId}', innId),
+        method: 'GET',
+        header: {
+          Authorization: 'Bearer ' + tokenStr,
+        },
+      }).then((res) => {
+        console.log(res)
+        this.setState({prevOrderNum: res.data.order.pickCode})
+      })
+
+
     } catch (error) {
       console.log('loadOrderList error--->', error)
     }
