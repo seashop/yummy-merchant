@@ -7,11 +7,11 @@ module.exports = {
     BUILD_DATE: JSON.stringify(buildDate())
   },
   defineConstants: {
-    APIBasePath: JSON.stringify('https://dev-ygo.fly.dev/v1')
+    APIBasePath: JSON.stringify('/v1')
   },
   mini: {},
   h5: {
-    publicPath: '/yummy-merchant',
+    publicPath: '/merchant',
     staticDirectory: 'static',
     /**
      * WebpackChain 插件配置
